@@ -1,0 +1,12 @@
+.github
+node_modules
+build
+dist
+package.json
+package-lock.json
+documents
+README.md
+.eslintrc.json
+.prettierrc
+next.config.mjs
+tsconfig.json
