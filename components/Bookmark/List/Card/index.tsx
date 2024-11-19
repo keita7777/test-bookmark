@@ -1,6 +1,7 @@
 import Image from "next/image";
 import testImage from "@/DummtData/images/test-image.png";
 import { bookmarkDummyType } from "@/DummtData/types/bookmarkType";
+import SettingButton from "./SettingButton";
 
 type Props = {
   bookmark: bookmarkDummyType;
@@ -21,6 +22,7 @@ const BookmarkCard = ({ bookmark }: Props) => {
         <div className="flex flex-col gap-2 w-full xl:ml-5">
           <div className="flex justify-between relative">
             <h2 className="text-xl font-bold">{bookmark.title}</h2>
+            <SettingButton id={bookmark.id} />
           </div>
 
           <p className="text-gray-600">{bookmark.description}</p>

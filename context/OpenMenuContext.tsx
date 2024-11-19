@@ -24,8 +24,8 @@ export const OpenMenuProvider = ({ children }: { children: ReactNode }) => {
       // FolderSettingButtonの要素がクリックされていない場合のみメニューを閉じる
       const target = event.target as HTMLElement;
 
-      // クリックされた要素（event.target）が特定のクラス（.folder-setting-button）を持っていない場合メニューを閉じる
-      if (!target.closest(".folder-setting-button")) {
+      // クリックされた要素（event.target）が特定のクラス（.setting-button）を持っていない場合メニューを閉じる
+      if (!target.closest(".setting-button")) {
         setOpenMenuId(null);
       }
     };
