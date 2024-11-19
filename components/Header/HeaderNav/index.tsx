@@ -95,8 +95,7 @@ const HeaderNav = ({ folders }: Props) => {
         </nav>
       </div>
 
-      {/*  md:w-[400px] フォルダメニュー作成後に調整 */}
-      <div className="w-full md:pl-4 absolute md:static left-0 top-full bg-gray-300 md:bg-transparent md:border-l-2 border-white z-20 md:w-[400px]">
+      <div className="w-full md:pl-4 absolute md:static left-0 top-full bg-gray-300 md:bg-transparent md:border-l-2 border-white z-20">
         <div className={`${switchMenu === "folder" ? "block" : "hidden"}`}>
           <FolderMenu folders={folders} />
         </div>

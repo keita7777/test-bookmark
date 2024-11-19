@@ -13,7 +13,7 @@ export default function BookmarkLayout({
     <div className="flex flex-col md:flex-row">
       <OpenMenuProvider>
         <Header />
-        <main>{children}</main>
+        <main className="flex-1 p-4">{children}</main>
       </OpenMenuProvider>
     </div>
   );
