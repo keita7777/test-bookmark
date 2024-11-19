@@ -7,7 +7,14 @@ import FolderMenu from "./FolderMenu";
 import SearchMenu from "./SearchMenu";
 import ProfileMenu from "./ProfileMenu";
 
-const HeaderNav = () => {
+// ダミーデータ用
+import { FoldersDummyData } from "@/DummtData/types/folderType";
+
+type Props = {
+  folders: FoldersDummyData;
+};
+
+const HeaderNav = ({ folders }: Props) => {
   // ボタンクリックで表示するメニュー切替
   const [switchMenu, setSwitchMenu] = useState("folder");
 
@@ -88,10 +95,10 @@ const HeaderNav = () => {
         </nav>
       </div>
 
-      {/* md:min-w-[300px] フォルダメニュー作成後に調整 */}
-      <div className="w-full md:pl-4 absolute md:static left-0 top-full bg-gray-300 md:bg-transparent md:border-l-2 border-white z-20 md:min-w-[300px]">
+      {/*  md:w-[400px] フォルダメニュー作成後に調整 */}
+      <div className="w-full md:pl-4 absolute md:static left-0 top-full bg-gray-300 md:bg-transparent md:border-l-2 border-white z-20 md:w-[400px]">
         <div className={`${switchMenu === "folder" ? "block" : "hidden"}`}>
-          <FolderMenu />
+          <FolderMenu folders={folders} />
         </div>
         <div className={`${switchMenu === "search" ? "block" : "hidden"}`}>
           <SearchMenu />

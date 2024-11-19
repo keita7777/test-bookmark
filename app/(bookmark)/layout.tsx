@@ -2,16 +2,19 @@
 // (auth)配下のページは認証フォームのみ表示
 
 import Header from "@/components/Header";
+import { OpenMenuProvider } from "@/context/OpenMenuContext";
 
-export default function RootLayout({
+export default function BookmarkLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
     <div className="flex flex-col md:flex-row">
-      <Header />
-      <main>{children}</main>
+      <OpenMenuProvider>
+        <Header />
+        <main>{children}</main>
+      </OpenMenuProvider>
     </div>
   );
 }
