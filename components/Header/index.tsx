@@ -11,7 +11,7 @@ const folders = foldersDummyData as FoldersDummyData;
 
 const Header = () => {
   return (
-    <header className="flex justify-between md:flex-col shrink-0 md:h-screen bg-gray-500 w-full md:w-5/12 md:max-w-[500px] md:min-w-[350px] relative">
+    <header className="flex justify-between md:flex-col shrink-0 bg-gray-500 w-full md:w-5/12 md:max-w-[500px] md:min-w-[350px] relative">
       <h1 className="text-xl md:text-3xl px-4 py-4 text-white font-bold flex justify-center items-center">
         <Link href="/">ブックマーク管理</Link>
       </h1>
