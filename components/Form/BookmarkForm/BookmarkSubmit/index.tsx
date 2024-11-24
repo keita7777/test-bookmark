@@ -5,10 +5,10 @@
 import testImage from "@/DummtData/images/test-image.png";
 import Image from "next/image";
 import { bookmarkDummyType } from "@/DummtData/types/bookmarkType";
-import { FoldersDummyData } from "@/DummtData/types/folderType";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
+import { FolderWithRelation } from "@/types/folderType";
 
 type Props = {
   urlData?: {
@@ -17,7 +17,7 @@ type Props = {
     url: string;
     description: string;
   };
-  folderData: FoldersDummyData;
+  folderData: FolderWithRelation[];
   bookmarkData?: bookmarkDummyType;
 };
 

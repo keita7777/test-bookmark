@@ -2,12 +2,12 @@
 
 "use client";
 
-import { FoldersDummyData } from "@/DummtData/types/folderType";
+import { FolderWithRelation } from "@/types/folderType";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 
 type Props = {
-  folderData: FoldersDummyData;
+  folderData: FolderWithRelation[];
 };
 
 const FolderForm = ({ folderData }: Props) => {

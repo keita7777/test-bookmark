@@ -1,17 +1,14 @@
 // ブックマーク新規作成画面
 
 import BookmarkForm from "@/components/Form/BookmarkForm";
-import { foldersDummyData } from "@/DummtData/folderData";
-import { FoldersDummyData } from "@/DummtData/types/folderType";
+import { getFolderData } from "@/utils/db/fetchData";
 
-// DBのfoldersテーブルからデータを取得する
-// テストデータなので一旦asアサーションで型定義
-const folderData = foldersDummyData as FoldersDummyData;
+export default async function CreateBookmarkPage() {
+  const folders = await getFolderData();
 
-export default function CreateBookmarkPage() {
   return (
     <>
-      <BookmarkForm folderData={folderData} />
+      <BookmarkForm folderData={folders} />
     </>
   );
 }

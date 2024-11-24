@@ -3,11 +3,11 @@
 import Link from "next/link";
 import { FaPlus } from "react-icons/fa";
 import FolderTree from "./FolderTree";
-import { FoldersDummyData } from "@/DummtData/types/folderType";
 import { useState } from "react";
+import { FolderWithRelation } from "@/types/folderType";
 
 type Props = {
-  folders: FoldersDummyData;
+  folders: FolderWithRelation[];
 };
 
 const FolderMenu = ({ folders }: Props) => {

@@ -1,11 +1,10 @@
 // フォルダー新規作成画面
 
 import FolderForm from "@/components/Form/FolderForm";
-import { foldersDummyData } from "@/DummtData/folderData";
-import { FoldersDummyData } from "@/DummtData/types/folderType";
+import { getFolderData } from "@/utils/db/fetchData";
 
-export default function CreateFolderPage() {
-  const folderData = foldersDummyData as FoldersDummyData;
+export default async function CreateFolderPage() {
+  const folders = await getFolderData();
 
-  return <FolderForm folderData={folderData} />;
+  return <FolderForm folderData={folders} />;
 }

@@ -1,4 +1,3 @@
-import { Folder } from "@/DummtData/types/folderType";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -7,9 +6,10 @@ import FolderOpenButton from "./FolderOpenButton";
 import FolderSettingButton from "./FolderSettingButton";
 import { useOpenMenu } from "@/context/OpenMenuContext";
 import FolderSettingMenu from "./FolderSettingButton/FolderSettingMenu";
+import { FolderWithRelation } from "@/types/folderType";
 
 type Props = {
-  folder: Folder;
+  folder: FolderWithRelation;
   isSubFolderVisible: boolean;
   toggleFolder: () => void;
 };

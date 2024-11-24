@@ -6,12 +6,10 @@ import { FaFolder, FaRegUserCircle, FaSearch } from "react-icons/fa";
 import FolderMenu from "./FolderMenu";
 import SearchMenu from "./SearchMenu";
 import ProfileMenu from "./ProfileMenu";
-
-// ダミーデータ用
-import { FoldersDummyData } from "@/DummtData/types/folderType";
+import { FolderWithRelation } from "@/types/folderType";
 
 type Props = {
-  folders: FoldersDummyData;
+  folders: FolderWithRelation[];
 };
 
 const HeaderNav = ({ folders }: Props) => {
