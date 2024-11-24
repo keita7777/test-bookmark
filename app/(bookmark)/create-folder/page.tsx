@@ -1,5 +1,11 @@
 // フォルダー新規作成画面
 
+import FolderForm from "@/components/Form/FolderForm";
+import { foldersDummyData } from "@/DummtData/folderData";
+import { FoldersDummyData } from "@/DummtData/types/folderType";
+
 export default function CreateFolderPage() {
-  return <div>フォルダー作成フォーム</div>;
+  const folderData = foldersDummyData as FoldersDummyData;
+
+  return <FolderForm folderData={folderData} />;
 }
