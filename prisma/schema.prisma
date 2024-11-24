@@ -1,0 +1,65 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Users {
+  id         String      @id @default(uuid())
+  email      String
+  username   String
+  password   String
+  created_at DateTime    @default(now())
+  updated_at DateTime    @updatedAt
+  bookmarks  Bookmarks[]
+  folders    Folders[]
+}
+
+model Bookmarks {
+  id          String         @id @default(uuid())
+  user_id     String
+  folder_id   String
+  url         String
+  title       String
+  description String
+  image       String?
+  created_at  DateTime       @default(now())
+  updated_at  DateTime       @updatedAt
+  user        Users          @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  folder      Folders        @relation(fields: [folder_id], references: [id], onDelete: Cascade)
+  memo        Bookmark_memo? @relation("BookmarkMemo")
+}
+
+model Bookmark_memo {
+  id       String    @id @map("bookmark_id")
+  memo     String?
+  bookmark Bookmarks @relation("BookmarkMemo", fields: [id], references: [id], onDelete: Cascade)
+}
+
+model Folders {
+  id              String           @id @default(uuid())
+  user_id         String
+  name            String
+  created_at      DateTime         @default(now())
+  updated_at      DateTime         @updatedAt
+  user            Users            @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  bookmarks       Bookmarks[]
+  parent_relation Folder_relation? @relation("FolderToRelation")
+}
+
+model Folder_relation {
+  id            String  @id @default(uuid()) @map("folder_id")
+  parent_folder String?
+  hasChild      Boolean
+  level         Level
+  folder        Folders @relation("FolderToRelation", fields: [id], references: [id], onDelete: Cascade)
+}
+
+enum Level {
+  ONE
+  TWO
+  THREE
+}
