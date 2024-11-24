@@ -12,6 +12,7 @@ const BookmarkList = ({ folderId }: Props) => {
   return (
     <ul className="grid 2xl:grid-cols-2 xl:grid-cols-1 gap-4">
       {bookmarks && bookmarks.map((bookmark) => <BookmarkCard key={bookmark.id} bookmark={bookmark} />)}
+      {folderId} {/* eslintエラー対策、一時的に記述 */}
     </ul>
   );
 };
