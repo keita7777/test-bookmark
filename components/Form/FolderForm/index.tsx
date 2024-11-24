@@ -4,7 +4,7 @@
 
 import { FoldersDummyData } from "@/DummtData/types/folderType";
 import { useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
+import { FieldValues, useForm } from "react-hook-form";
 
 type Props = {
   folderData: FoldersDummyData;
@@ -26,9 +26,7 @@ const FolderForm = ({ folderData }: Props) => {
     router.refresh();
   };
 
-  const onSubmit = () =>
-    // data: FieldValues
-    {};
+  const onSubmit = (data: FieldValues) => {};
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-8 px-4 pt-12 pb-4 max-w-7xl mx-auto">

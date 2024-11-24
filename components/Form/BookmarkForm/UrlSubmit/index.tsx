@@ -11,12 +11,7 @@ type Props = {
   setIsUrlSubmit: Dispatch<SetStateAction<boolean>>;
 };
 
-const UrlSubmit = ({
-  url,
-  setUrl,
-  // setUrlData,
-  setIsUrlSubmit,
-}: Props) => {
+const UrlSubmit = ({ url, setUrl, setUrlData, setIsUrlSubmit }: Props) => {
   // URLからサイトのデータを取得
   const handleUrlSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
