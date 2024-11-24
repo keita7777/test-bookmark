@@ -1,13 +1,14 @@
-import { bookmarkDummyData } from "@/DummtData/bookmarkData";
 import BookmarkCard from "./Card";
+import { getBookmarkData } from "@/utils/db/fetchData";
+import { BookmarkWithMemo } from "@/types/bookmarkType";
 
 type Props = {
   folderId?: string;
 };
 
 // folderIdのpropsはデータフェッチで使用する予定
-const BookmarkList = ({ folderId }: Props) => {
-  const bookmarks = bookmarkDummyData;
+const BookmarkList = async ({ folderId }: Props) => {
+  const bookmarks: BookmarkWithMemo[] = await getBookmarkData();
 
   return (
     <ul className="grid 2xl:grid-cols-2 xl:grid-cols-1 gap-4">
