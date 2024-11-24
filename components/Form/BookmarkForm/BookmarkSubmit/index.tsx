@@ -6,12 +6,13 @@ import testImage from "@/DummtData/images/test-image.png";
 import Image from "next/image";
 import { bookmarkDummyType } from "@/DummtData/types/bookmarkType";
 import { useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
-import { useState } from "react";
+import { FieldValues, useForm } from "react-hook-form";
+import { useEffect, useState } from "react";
 import { FolderWithRelation } from "@/types/folderType";
+import { createBookmark } from "@/utils/db/fetchData";
 
 type Props = {
-  urlData?: {
+  urlData: {
     title: string;
     image: string;
     url: string;
@@ -26,12 +27,12 @@ const BookmarkSubmit = ({ urlData, folderData, bookmarkData }: Props) => {
   const {
     handleSubmit,
     register,
-    // setError,
-    // setValue,
+    setError,
+    setValue,
     formState: { errors },
   } = useForm();
 
-  // フォルダ階層
+  // フォルダメニューを選択するごとに、フォルダ階層を設定
   const [folder_level1, setFolder_level1] = useState<string | null>(null);
   const [folder_level2, setFolder_level2] = useState<string | null>(null);
   const [folder_level3, setFolder_level3] = useState<string | null>(null);
@@ -43,19 +44,48 @@ const BookmarkSubmit = ({ urlData, folderData, bookmarkData }: Props) => {
     router.refresh();
   };
 
-  const onSubmit = () =>
-    // data: FieldValues
-    {
-      if (folder_level3) {
-        // eslintエラー対策、一時的に記述
-        return;
-      }
-      // console.log(data, folder_level1, folder_level2, folder_level3);
-    };
+  // 選択したフォルダをuseFormのselectedFolderの値に設定する
+  useEffect(() => {
+    if (folder_level3) {
+      // 第3階層フォルダまで選択された場合
+      setValue("selectedFolder", folder_level3);
+    } else if (folder_level2) {
+      // 第2階層フォルダまで選択された場合
+      setValue("selectedFolder", folder_level2);
+    } else if (folder_level1) {
+      // 第1階層フォルダまで選択された場合
+      setValue("selectedFolder", folder_level1);
+    } else {
+      // フォルダが選択されていない場合
+      setValue("selectedFolder", null);
+    }
+  }, [folder_level1, folder_level2, folder_level3, setValue]);
+
+  const onSubmit = async (data: FieldValues) => {
+    // 第1階層のフォルダが選択されていない場合はエラーを表示
+    if (!folder_level1) {
+      setError("root", {
+        message: "フォルダを選択してください",
+      });
+      return;
+    }
+
+    const { title, description, selectedFolder, memo } = data;
+
+    // bookmarksテーブルにデータを挿入する処理を実行
+    await createBookmark(urlData.url, title, description, selectedFolder, urlData.image, memo);
+  };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
-      {errors.root && <p className="text-red-500 text-lg font-bold">{errors.root.message}</p>}
+      {Object.entries(errors).map(
+        ([key, error]) =>
+          error?.message && (
+            <p key={key} className="text-red-500 text-lg font-bold">
+              {error.message?.toString()}
+            </p>
+          ),
+      )}
       <div className="flex justify-center flex-col xl:flex-row items-start gap-4">
         <div className="relative w-full xl:w-[400px] h-[300px] xl:h-[250px]">
           <Image src={urlData?.image || testImage} fill alt="画像" />
@@ -68,7 +98,7 @@ const BookmarkSubmit = ({ urlData, folderData, bookmarkData }: Props) => {
             type="text"
             className="border border-black rounded-md p-2"
             defaultValue={bookmarkData?.title || urlData?.title || ""}
-            {...register("title")}
+            {...register("title", { required: "タイトルを入力してください" })}
           />
           <label htmlFor="" className="text-xl font-bold">
             詳細

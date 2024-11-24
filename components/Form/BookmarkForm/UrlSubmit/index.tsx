@@ -1,6 +1,7 @@
 // 入力したURLからサイトの情報を取得する
 // サイト情報の取得は「linkpreview API」を使用
 
+import { getUrlInfo } from "@/utils/services/linkpreview";
 import { Dispatch, FormEvent, SetStateAction } from "react";
 import { IoSend } from "react-icons/io5";
 
@@ -11,19 +12,14 @@ type Props = {
   setIsUrlSubmit: Dispatch<SetStateAction<boolean>>;
 };
 
-const UrlSubmit = ({
-  url,
-  setUrl,
-  // setUrlData,
-  setIsUrlSubmit,
-}: Props) => {
+const UrlSubmit = ({ url, setUrl, setUrlData, setIsUrlSubmit }: Props) => {
   // URLからサイトのデータを取得
   const handleUrlSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (url) {
-      // const data = await getUrlInfo(url);
-      // setUrlData(data);
+      const data = await getUrlInfo(url);
+      setUrlData(data);
     }
     setIsUrlSubmit(true);
   };

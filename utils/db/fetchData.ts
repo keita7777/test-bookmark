@@ -31,3 +31,36 @@ export const getBookmarkData = async () => {
   const data = await res.json();
   return data.bookmarks;
 };
+
+// ブックマークを新規作成する処理
+
+export const createBookmark = async (
+  url: string,
+  title: string,
+  description: string,
+  folder_id: string,
+  image: string | null | undefined,
+  memo: string | null,
+) => {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/bookmark`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      // 認証を実装次第修正
+      userId: "f5a12336-c5d6-4b58-a549-b8f4be0db8b1",
+      folder_id,
+      url,
+      title,
+      description,
+      image,
+      memo,
+    }),
+  });
+
+  if (!res.ok) {
+    console.error("ブックマークの作成に失敗しました", res.statusText);
+    return null;
+  }
+};
