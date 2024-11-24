@@ -7,7 +7,7 @@ import Image from "next/image";
 import { bookmarkDummyType } from "@/DummtData/types/bookmarkType";
 import { FoldersDummyData } from "@/DummtData/types/folderType";
 import { useRouter } from "next/navigation";
-import { FieldValues, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { useState } from "react";
 
 type Props = {
@@ -43,9 +43,15 @@ const BookmarkSubmit = ({ urlData, folderData, bookmarkData }: Props) => {
     router.refresh();
   };
 
-  const onSubmit = (data: FieldValues) => {
-    // console.log(data, folder_level1, folder_level2, folder_level3);
-  };
+  const onSubmit = () =>
+    // data: FieldValues
+    {
+      if (folder_level3) {
+        // eslintエラー対策、一時的に記述
+        return;
+      }
+      // console.log(data, folder_level1, folder_level2, folder_level3);
+    };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
