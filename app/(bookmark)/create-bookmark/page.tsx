@@ -6,9 +6,5 @@ import { getFolderData } from "@/utils/db/fetchData";
 export default async function CreateBookmarkPage() {
   const folders = await getFolderData();
 
-  return (
-    <>
-      <BookmarkForm folderData={folders} />
-    </>
-  );
+  return <BookmarkForm folderData={folders} />;
 }

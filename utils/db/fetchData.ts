@@ -1,7 +1,6 @@
-// フォルダデータを取得する処理
-
 import { Level } from "@prisma/client";
 
+// フォルダデータを取得する処理
 export const getFolderData = async () => {
   const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/folder`, {
     method: "GET",
@@ -18,9 +17,9 @@ export const getFolderData = async () => {
 };
 
 // ブックマークデータを取得する処理
-
-export const getBookmarkData = async () => {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/bookmark`, {
+// 引数がない場合は全件、ある場合は特定のブックマークを取得する
+export const getBookmarkData = async (id?: string) => {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/bookmark${id ? "?bookmarkId=" + id : ""}`, {
     method: "GET",
     cache: "no-store",
   });
@@ -35,7 +34,6 @@ export const getBookmarkData = async () => {
 };
 
 // ブックマークを新規作成する処理
-
 export const createBookmark = async (
   url: string,
   title: string,
@@ -68,7 +66,6 @@ export const createBookmark = async (
 };
 
 // フォルダを新規作成する処理
-
 export const createFolder = async (name: string, parentFolder: string | null, folderLevel: Level) => {
   const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/folder`, {
     method: "POST",
@@ -88,4 +85,32 @@ export const createFolder = async (name: string, parentFolder: string | null, fo
     console.error("フォルダの作成に失敗しました", res.statusText);
     return null;
   }
+};
+
+// ブックマークを更新する処理
+export const updateBookmark = async (
+  bookmarId: string,
+  url: string,
+  title: string,
+  description: string,
+  folder_id: string,
+  image: string | null | undefined,
+  memo: string | null,
+) => {
+  await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/bookmark?bookmarkId=${bookmarId}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      // 認証を実装次第修正
+      userId: "f5a12336-c5d6-4b58-a549-b8f4be0db8b1",
+      folder_id,
+      url,
+      title,
+      description,
+      image,
+      memo,
+    }),
+  });
 };

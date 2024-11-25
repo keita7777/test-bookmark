@@ -6,19 +6,18 @@
 import { useState } from "react";
 import BookmarkSubmit from "./BookmarkSubmit";
 import UrlSubmit from "./UrlSubmit";
-import { bookmarkDummyType } from "@/DummtData/types/bookmarkType";
 import { FolderWithRelation } from "@/types/folderType";
+import { BookmarkWithMemo } from "@/types/bookmarkType";
 
 type Props = {
   folderData: FolderWithRelation[];
-  bookmarkData?: bookmarkDummyType;
+  bookmarkData?: BookmarkWithMemo;
 };
 
 const BookmarkForm = ({ folderData, bookmarkData }: Props) => {
   // 入力されたURLを管理
   // 編集の場合、初期値に該当のブックマークのURLを設定
   const [url, setUrl] = useState(bookmarkData?.url || null);
-
   const [isUrlSubmit, setIsUrlSubmit] = useState(false);
 
   // UrlSubmitコンポーネントで取得したサイト情報を管理
@@ -42,8 +41,8 @@ const BookmarkForm = ({ folderData, bookmarkData }: Props) => {
   return (
     <div className="flex flex-col gap-8 px-4 pt-12 pb-4 max-w-7xl mx-auto">
       <UrlSubmit url={url} setUrl={setUrl} setUrlData={handleSetUrl} setIsUrlSubmit={setIsUrlSubmit} />
-      {/* urlが存在する場合のみBookmarkSubmitコンポーネントを表示 */}
-      {isUrlSubmit && (
+      {/* URLが送信された場合（新規作成）、bookmarkDataがある場合（編集）、BookmarkSubmitコンポーネントを表示 */}
+      {(isUrlSubmit || bookmarkData) && (
         <BookmarkSubmit key={bookmarkKey} urlData={urlData} folderData={folderData} bookmarkData={bookmarkData} />
       )}
     </div>

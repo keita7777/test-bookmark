@@ -4,12 +4,12 @@
 
 import testImage from "@/DummtData/images/test-image.png";
 import Image from "next/image";
-import { bookmarkDummyType } from "@/DummtData/types/bookmarkType";
 import { useRouter } from "next/navigation";
 import { FieldValues, useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import { FolderWithRelation } from "@/types/folderType";
-import { createBookmark } from "@/utils/db/fetchData";
+import { createBookmark, updateBookmark } from "@/utils/db/fetchData";
+import { BookmarkWithMemo } from "@/types/bookmarkType";
 
 type Props = {
   urlData: {
@@ -19,11 +19,12 @@ type Props = {
     description: string;
   };
   folderData: FolderWithRelation[];
-  bookmarkData?: bookmarkDummyType;
+  bookmarkData?: BookmarkWithMemo;
 };
 
 const BookmarkSubmit = ({ urlData, folderData, bookmarkData }: Props) => {
   const router = useRouter();
+
   const {
     handleSubmit,
     register,
@@ -32,7 +33,7 @@ const BookmarkSubmit = ({ urlData, folderData, bookmarkData }: Props) => {
     formState: { errors },
   } = useForm();
 
-  // フォルダメニューを選択するごとに、フォルダ階層を設定
+  // フォルダメニューを選択するごとに、各フォルダ階層に設定されたfolderIdを設定
   const [folder_level1, setFolder_level1] = useState<string | null>(null);
   const [folder_level2, setFolder_level2] = useState<string | null>(null);
   const [folder_level3, setFolder_level3] = useState<string | null>(null);
@@ -43,6 +44,63 @@ const BookmarkSubmit = ({ urlData, folderData, bookmarkData }: Props) => {
     router.push("/");
     router.refresh();
   };
+
+  // 編集の場合、bookmarkDataをdefaultValueに設定する
+  const [folder_level1_defaultValue, setFolder_level1_defaultValue] = useState<string | null>(null);
+  const [folder_level2_defaultValue, setFolder_level2_defaultValue] = useState<string | null>(null);
+  const [folder_level3_defaultValue, setFolder_level3_defaultValue] = useState<string | null>(null);
+
+  // isReadyがtrueになってからformを表示させる
+  // 編集の場合にdefaultValueを正常に設定するための対策
+  const [isReady, setIsReady] = useState(false);
+
+  // bookmarkDataをもとにフォルダのdefaultValueを設定する
+  useEffect(() => {
+    if (bookmarkData) {
+      const data = folderData.filter((item) => item.id === bookmarkData.folder_id);
+
+      if (!data) {
+        setIsReady(true);
+        return;
+      }
+
+      const currentFolderData = data[0];
+
+      if (currentFolderData.parent_relation.level === "THREE") {
+        // ブックマークのフォルダが第3階層の場合
+        const folder3 = currentFolderData.id;
+        const folder2 = currentFolderData.parent_relation.parent_folder;
+        const folder1Data = folderData.filter((item) => item.parent_relation.id === folder2);
+        const folder1 = folder1Data[0].parent_relation.parent_folder;
+
+        setFolder_level3_defaultValue(folder3);
+        setFolder_level2_defaultValue(folder2);
+        setFolder_level1_defaultValue(folder1);
+
+        setFolder_level3(folder3);
+        setFolder_level2(folder2);
+        setFolder_level1(folder1);
+      } else if (currentFolderData.parent_relation.level === "TWO") {
+        // ブックマークのフォルダが第2階層の場合
+        const folder2 = currentFolderData.id;
+        const folder1 = currentFolderData.parent_relation.id;
+        setFolder_level2_defaultValue(folder2);
+        setFolder_level1_defaultValue(folder1);
+
+        setFolder_level2(folder2);
+        setFolder_level1(folder1);
+      } else {
+        // ブックマークのフォルダが第1階層の場合
+        const folder1 = currentFolderData.id;
+        setFolder_level1_defaultValue(folder1);
+
+        setFolder_level1(folder1);
+      }
+      setIsReady(true);
+    } else {
+      setIsReady(true);
+    }
+  }, [bookmarkData, folderData]);
 
   // 選択したフォルダをuseFormのselectedFolderの値に設定する
   useEffect(() => {
@@ -72,9 +130,22 @@ const BookmarkSubmit = ({ urlData, folderData, bookmarkData }: Props) => {
 
     const { title, description, selectedFolder, memo } = data;
 
-    // bookmarksテーブルにデータを挿入する処理を実行
-    await createBookmark(urlData.url, title, description, selectedFolder, urlData.image, memo);
+    if (bookmarkData) {
+      // 更新の場合
+      // bookmarksテーブルのデータを更新する処理を実行
+      updateBookmark(bookmarkData.id, urlData.url, title, description, selectedFolder, urlData.image, memo);
+    } else {
+      // 新規作成の場合
+      // bookmarksテーブルにデータを挿入する処理を実行
+      createBookmark(urlData.url, title, description, selectedFolder, urlData.image, memo);
+    }
+    router.push("/");
+    router.refresh();
   };
+
+  if (!isReady) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
@@ -123,7 +194,7 @@ const BookmarkSubmit = ({ urlData, folderData, bookmarkData }: Props) => {
               name=""
               id=""
               className="border border-black rounded-md p-2"
-              defaultValue={""}
+              defaultValue={folder_level1_defaultValue || ""}
               onChange={(e) => {
                 setFolder_level1(e.target.value);
                 setFolder_level2(null);
@@ -153,6 +224,7 @@ const BookmarkSubmit = ({ urlData, folderData, bookmarkData }: Props) => {
                 name=""
                 id=""
                 className="border border-black rounded-md p-2"
+                defaultValue={folder_level2_defaultValue || ""}
                 onChange={(e) => {
                   setFolder_level2(e.target.value);
                   setFolder_level3(null);
@@ -183,6 +255,7 @@ const BookmarkSubmit = ({ urlData, folderData, bookmarkData }: Props) => {
                 name=""
                 id=""
                 className="border border-black rounded-md p-2"
+                defaultValue={folder_level3_defaultValue || ""}
                 onChange={(e) => setFolder_level3(e.target.value)}
               >
                 <option disabled value="">
@@ -210,7 +283,7 @@ const BookmarkSubmit = ({ urlData, folderData, bookmarkData }: Props) => {
         <textarea
           rows={5}
           className="border border-black rounded-md p-2"
-          defaultValue={bookmarkData?.memo || ""}
+          defaultValue={bookmarkData?.memo?.memo || ""}
           {...register("memo")}
         />
       </div>

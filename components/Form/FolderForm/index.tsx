@@ -51,7 +51,7 @@ const FolderForm = ({ folderData }: Props) => {
     } else {
       defineFolderLevel();
     }
-  }, [currentParentFolderValues]);
+  }, [currentParentFolderValues, folderData, setError]);
 
   // キャンセルボタンクリック時の処理
   const handleCancel = (e: React.MouseEvent<HTMLButtonElement>) => {
