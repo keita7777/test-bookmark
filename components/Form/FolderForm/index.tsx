@@ -3,8 +3,10 @@
 "use client";
 
 import { FolderWithRelation } from "@/types/folderType";
+import { createFolder } from "@/utils/db/fetchData";
 import { useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
+import { useEffect, useState } from "react";
+import { FieldValues, useForm } from "react-hook-form";
 
 type Props = {
   folderData: FolderWithRelation[];
@@ -12,12 +14,44 @@ type Props = {
 
 const FolderForm = ({ folderData }: Props) => {
   const router = useRouter();
-  const { handleSubmit, register } = useForm({
+  const {
+    handleSubmit,
+    register,
+    setError,
+    // resetField,
+    // setValue,
+    watch,
+  } = useForm({
     defaultValues: {
       name: "",
       parentFolder: "",
     },
   });
+
+  // 選択されたフォルダの階層を定義
+  const [folderLevel, setFolderLevel] = useState<"ONE" | "TWO" | "THREE">("ONE");
+  const currentParentFolderValues = watch("parentFolder");
+
+  useEffect(() => {
+    const defineFolderLevel = () => {
+      const data = folderData.filter((folder) => folder.id === currentParentFolderValues);
+      if (data[0]?.parent_relation.level === "ONE") {
+        setFolderLevel("TWO");
+      } else if (data[0]?.parent_relation.level === "TWO") {
+        setFolderLevel("THREE");
+      } else {
+        // 第3階層のフォルダは親フォルダに設定できない
+        setError("root", {
+          message: "このフォルダ以下には作成できません",
+        });
+      }
+    };
+    if (currentParentFolderValues === "") {
+      setFolderLevel("ONE");
+    } else {
+      defineFolderLevel();
+    }
+  }, [currentParentFolderValues]);
 
   // キャンセルボタンクリック時の処理
   const handleCancel = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -26,9 +60,11 @@ const FolderForm = ({ folderData }: Props) => {
     router.refresh();
   };
 
-  const onSubmit = () =>
-    // data: FieldValues
-    {};
+  const onSubmit = (data: FieldValues) => {
+    const { name, parentFolder } = data;
+    const formattedParentFolder = parentFolder === "" ? null : parentFolder;
+    createFolder(name, formattedParentFolder, folderLevel);
+  };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-8 px-4 pt-12 pb-4 max-w-7xl mx-auto">
