@@ -18,11 +18,14 @@ export const getFolderData = async (id?: string) => {
 
 // ブックマークデータを取得する処理
 // 引数がない場合は全件、ある場合は特定のブックマークを取得する
-export const getBookmarkData = async (id?: string) => {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/bookmark${id ? "?folderId=" + id : ""}`, {
-    method: "GET",
-    cache: "no-store",
-  });
+export const getBookmarkData = async ({ folderId, bookmarkId }: { folderId?: string; bookmarkId?: string }) => {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/bookmark${folderId ? "?folderId=" + folderId : ""}${bookmarkId ? "?bookmarkId=" + bookmarkId : ""}`,
+    {
+      method: "GET",
+      cache: "no-store",
+    },
+  );
 
   if (!res.ok) {
     console.error("ブックマークデータの取得に失敗しました", res.statusText);

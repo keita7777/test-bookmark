@@ -7,7 +7,7 @@ type Props = {
 };
 
 const BookmarkList = async ({ folderId }: Props) => {
-  const bookmarks: BookmarkWithMemo[] = await getBookmarkData(folderId);
+  const bookmarks: BookmarkWithMemo[] = await getBookmarkData({ folderId });
 
   return (
     <ul className="grid 2xl:grid-cols-2 xl:grid-cols-1 gap-4">

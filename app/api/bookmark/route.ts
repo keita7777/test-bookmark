@@ -4,6 +4,7 @@ import { NextRequest, NextResponse } from "next/server";
 export const GET = async (req: NextRequest) => {
   const searchParams = req.nextUrl.searchParams;
   const folderId = searchParams.get("folderId");
+  const bookmarkId = searchParams.get("bookmarkId");
 
   // folderIdの子フォルダの配列を用意
   let childFolders: Array<string> = [];
@@ -41,6 +42,7 @@ export const GET = async (req: NextRequest) => {
 
     const bookmarks = await prisma.bookmarks.findMany({
       where: {
+        id: bookmarkId || undefined,
         folder_id: {
           // folderIdがある場合は子フォルダ、孫フォルダを含めて取得する
           in: folderId ? resultArray : undefined,
