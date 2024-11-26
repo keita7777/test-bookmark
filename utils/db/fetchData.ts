@@ -114,3 +114,31 @@ export const updateBookmark = async (
     }),
   });
 };
+
+// フォルダを更新する処理
+export const updateFolder = async (
+  folderId: string,
+  currentParentFolderId: string | null,
+  currentParentFolderHasChildren: boolean,
+  updateParentFolderHasChildren: boolean,
+  name: string,
+  parentFolder: string | null,
+  folderLevel: string,
+) => {
+  await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/folder?folderId=${folderId}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      currentParentFolderId,
+      currentParentFolderHasChildren,
+      updateParentFolderHasChildren,
+      // 認証を実装次第修正
+      userId: "f5a12336-c5d6-4b58-a549-b8f4be0db8b1",
+      name,
+      parentFolder,
+      folderLevel,
+    }),
+  });
+};

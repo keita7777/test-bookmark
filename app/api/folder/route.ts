@@ -1,5 +1,5 @@
 import prisma from "@/utils/db/db";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 export const GET = async () => {
   try {
@@ -15,7 +15,7 @@ export const GET = async () => {
   }
 };
 
-export const POST = async (req: Request) => {
+export const POST = async (req: NextRequest) => {
   try {
     const data = await req.json();
 
@@ -53,5 +53,70 @@ export const POST = async (req: Request) => {
     return NextResponse.json({ message: "投稿完了" }, { status: 200 });
   } catch (error) {
     return NextResponse.json({ message: "投稿失敗", error }, { status: 500 });
+  }
+};
+
+export const PUT = async (req: NextRequest) => {
+  const searchParams = req.nextUrl.searchParams;
+  const folderId = searchParams.get("folderId");
+  const data = await req.json();
+
+  if (!folderId) {
+    return NextResponse.json({ message: "更新失敗" }, { status: 500 });
+  }
+
+  try {
+    // foldersテーブルを更新
+    const folderResult = await prisma.folders.update({
+      where: {
+        id: folderId,
+      },
+      data: {
+        user_id: data.userId,
+        name: data.name,
+      },
+    });
+
+    // folder_relationテーブルを更新
+    await prisma.folder_relation.update({
+      where: {
+        id: folderId,
+      },
+      data: {
+        id: folderResult.id,
+        // 第1階層の場合parentFolderが存在しない
+        parent_folder: data.parentFolder || null,
+        level: data.folderLevel,
+      },
+    });
+
+    // 変更前に親フォルダが存在した場合かつ、更新前の親フォルダが更新対象のフォルダ以外に子フォルダを持たない場合、hasChildをfalseに更新
+    if (!data.currentParentFolderHasChildren && data.currentParentFolderId) {
+      await prisma.folder_relation.update({
+        where: {
+          id: data.currentParentFolderId,
+        },
+        data: {
+          hasChild: false,
+        },
+      });
+    }
+
+    // 更新後の親フォルダを設定した場合、かつ更新後の親フォルダが更新対象のフォルダ以外に子フォルダを持っていなかった場合
+    // 更新後の親フォルダのfolder_relationデータのhasChildを更新
+    if (!data.updateParentFolderHasChildren && data.parentFolder) {
+      await prisma.folder_relation.update({
+        where: {
+          id: data.parentFolder,
+        },
+        data: {
+          hasChild: true,
+        },
+      });
+    }
+
+    return NextResponse.json({ message: "更新完了" }, { status: 200 });
+  } catch (error) {
+    return NextResponse.json({ message: "更新失敗", error }, { status: 500 });
   }
 };
