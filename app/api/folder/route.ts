@@ -1,9 +1,16 @@
 import prisma from "@/utils/db/db";
 import { NextRequest, NextResponse } from "next/server";
 
-export const GET = async () => {
+export const GET = async (req: NextRequest) => {
+  const searchParams = req.nextUrl.searchParams;
+  const folderId = searchParams.get("folderId");
+
   try {
     const folders = await prisma.folders.findMany({
+      // folderIdがある場合は特定のフォルダデータのみ取得
+      where: {
+        id: folderId || undefined,
+      },
       include: {
         parent_relation: true,
       },

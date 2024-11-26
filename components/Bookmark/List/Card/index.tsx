@@ -2,14 +2,26 @@ import Image from "next/image";
 import testImage from "@/DummtData/images/test-image.png";
 import SettingButton from "./SettingButton";
 import { BookmarkWithMemo } from "@/types/bookmarkType";
+import { getBreadcrumbPath } from "@/utils/common/breadcrumbs";
 
 type Props = {
   bookmark: BookmarkWithMemo;
 };
 
-const BookmarkCard = ({ bookmark }: Props) => {
+const BookmarkCard = async ({ bookmark }: Props) => {
+  const folderData: Record<string, string | null> = await getBreadcrumbPath(bookmark.folder_id);
+
   return (
     <li className="flex flex-col border border-black rounded-md p-3 relative gap-4">
+      <p className="bg-blue-300 flex justify-start items-center px-2 py-1 rounded-md text-xs w-max">
+        {["grandParentFolderName", "parentFolderName", "folderName"]
+          .filter((key) => folderData[key])
+          .map((key, index, array) => (
+            <span key={key} className={`${index < array.length - 1 ? "after:content-['/'] after:mx-2" : ""}`}>
+              {folderData[key]}
+            </span>
+          ))}
+      </p>
       <div className="flex flex-col xl:flex-row">
         <a
           href={bookmark.url}

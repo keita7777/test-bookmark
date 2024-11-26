@@ -1,8 +1,8 @@
 import { Level } from "@prisma/client";
 
 // フォルダデータを取得する処理
-export const getFolderData = async () => {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/folder`, {
+export const getFolderData = async (id?: string) => {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/folder${id ? "?folderId=" + id : ""}`, {
     method: "GET",
     cache: "no-store",
   });
