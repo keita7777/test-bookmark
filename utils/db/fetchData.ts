@@ -147,8 +147,21 @@ export const updateFolder = async (
 };
 
 // ブックマークを削除する処理
-export const deleteBookmark = async (bookmarId: string) => {
-  await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/bookmark?bookmarkId=${bookmarId}`, {
+export const deleteBookmark = async (bookmarkId: string) => {
+  await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/bookmark?bookmarkId=${bookmarkId}`, {
     method: "DELETE",
+  });
+};
+
+// フォルダを削除する処理
+export const deleteFolder = async (folderId: string, relatedFolders: Array<string>) => {
+  await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/folder?folderId=${folderId}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      relatedFolders,
+    }),
   });
 };

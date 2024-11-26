@@ -17,9 +17,10 @@ const FolderTree = ({ folders, parentId = null, openFolders, toggleFolder }: Pro
       // parentIdがない場合は親フォルダが存在しないフォルダ（第1階層のフォルダ）を取得する
       .filter((folder) => folder.parent_relation.parent_folder === parentId)
       .map((folder) => (
-        <li key={folder.id} className="flex flex-col gap-5">
+        <li id={folder.id} key={folder.id} className="flex flex-col gap-5">
           <FolderItem
             folder={folder}
+            folderData={folders}
             isSubFolderVisible={!!openFolders[folder.id]}
             toggleFolder={() => toggleFolder(folder.id)}
           />

@@ -127,3 +127,26 @@ export const PUT = async (req: NextRequest) => {
     return NextResponse.json({ message: "更新失敗", error }, { status: 500 });
   }
 };
+
+export const DELETE = async (req: NextRequest) => {
+  const searchParams = req.nextUrl.searchParams;
+  const folderId = searchParams.get("folderId");
+  const data = await req.json();
+
+  if (!folderId) {
+    return NextResponse.json({ message: "削除失敗" }, { status: 500 });
+  }
+  try {
+    await prisma.folders.deleteMany({
+      where: {
+        id: {
+          in: data.relatedFolders,
+        },
+      },
+    });
+
+    return NextResponse.json({ message: "削除完了" }, { status: 200 });
+  } catch (error) {
+    return NextResponse.json({ message: "削除失敗", error }, { status: 500 });
+  }
+};

@@ -25,7 +25,7 @@ const DeleteModal = ({ id, setIsDeleteClick }: Props) => {
     return () => {
       document.removeEventListener("click", handleClickOutside);
     };
-  }, []);
+  }, [setIsDeleteClick]);
 
   return (
     <div className="delete-modal flex justify-center items-center flex-col gap-4 w-full h-full bg-red-400 bg-opacity-80 absolute left-0 top-0 z-10">
