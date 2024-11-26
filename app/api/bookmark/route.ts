@@ -115,3 +115,22 @@ export const PUT = async (req: NextRequest) => {
     return NextResponse.json({ message: "更新失敗", error }, { status: 500 });
   }
 };
+
+export const DELETE = async (req: NextRequest) => {
+  const searchParams = req.nextUrl.searchParams;
+  const bookmarkId = searchParams.get("bookmarkId");
+  if (!bookmarkId) {
+    return NextResponse.json({ message: "削除失敗" }, { status: 500 });
+  }
+  try {
+    await prisma.bookmarks.delete({
+      where: {
+        id: bookmarkId,
+      },
+    });
+
+    return NextResponse.json({ message: "削除完了" }, { status: 200 });
+  } catch (error) {
+    return NextResponse.json({ message: "削除失敗", error }, { status: 500 });
+  }
+};

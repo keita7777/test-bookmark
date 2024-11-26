@@ -145,3 +145,10 @@ export const updateFolder = async (
     }),
   });
 };
+
+// ブックマークを削除する処理
+export const deleteBookmark = async (bookmarId: string) => {
+  await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/bookmark?bookmarkId=${bookmarId}`, {
+    method: "DELETE",
+  });
+};

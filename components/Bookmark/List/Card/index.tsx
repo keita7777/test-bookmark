@@ -12,7 +12,7 @@ const BookmarkCard = async ({ bookmark }: Props) => {
   const folderData: Record<string, string | null> = await getBreadcrumbPath(bookmark.folder_id);
 
   return (
-    <li className="flex flex-col border border-black rounded-md p-3 relative gap-4">
+    <li id={bookmark.id} className="flex flex-col border border-black rounded-md p-3 relative gap-4">
       <p className="bg-blue-300 flex justify-start items-center px-2 py-1 rounded-md text-xs w-max">
         {["grandParentFolderName", "parentFolderName", "folderName"]
           .filter((key) => folderData[key])

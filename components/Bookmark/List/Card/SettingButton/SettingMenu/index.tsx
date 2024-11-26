@@ -1,10 +1,12 @@
 import Link from "next/link";
+import { Dispatch, SetStateAction } from "react";
 
 type Props = {
   id: string;
+  setIsDeleteClick: Dispatch<SetStateAction<boolean>>;
 };
 
-const SettingMenu = ({ id }: Props) => {
+const SettingMenu = ({ id, setIsDeleteClick }: Props) => {
   return (
     <div className="absolute -right-0 top-full z-10 bg-gray-200 px-4 py-3 rounded-xl">
       <ul>
@@ -14,7 +16,9 @@ const SettingMenu = ({ id }: Props) => {
           </Link>
         </li>
         <li>
-          <button className="bg-white rounded-md px-4 py-2">ブックマーク削除</button>
+          <button onClick={() => setIsDeleteClick(true)} className="bg-white rounded-md px-4 py-2">
+            ブックマーク削除
+          </button>
         </li>
       </ul>
     </div>
