@@ -4,9 +4,5 @@
 import BookmarkList from "@/components/Bookmark/List";
 
 export default function BookmarksByFolderPage({ params }: { params: { id: string } }) {
-  return (
-    <>
-      <BookmarkList folderId={params.id} />
-    </>
-  );
+  return <BookmarkList folderId={params.id} />;
 }
