@@ -20,6 +20,9 @@ export const getBreadcrumbPath = async (id: string) => {
 
   // フォルダ名を取得しbreadcrumbのfolderNameに設定
   const folderData = await getFolderData(id);
+
+  if (!folderData) return breadcrumb;
+
   breadcrumb.currentFolder.id = folderData[0].id;
   breadcrumb.currentFolder.name = folderData[0].name;
   // 親フォルダがない場合はbreadcrumbをreturnする
@@ -27,6 +30,9 @@ export const getBreadcrumbPath = async (id: string) => {
 
   // 親フォルダのフォルダ名を取得しbreadcrumbのparentFolderNameに設定
   const parentFolderData = await getFolderData(folderData[0].parent_relation.parent_folder);
+
+  if (!parentFolderData) return breadcrumb;
+
   breadcrumb.parentFolderName.id = parentFolderData[0].id;
   breadcrumb.parentFolderName.name = parentFolderData[0].name;
   // 親フォルダがない場合はbreadcrumbをreturnする
@@ -34,6 +40,9 @@ export const getBreadcrumbPath = async (id: string) => {
 
   // さらに親フォルダのフォルダ名を取得しbreadcrumbのgrandParentFolderNameに設定
   const grandParentFolderData = await getFolderData(parentFolderData[0].parent_relation.parent_folder);
+
+  if (!grandParentFolderData) return breadcrumb;
+
   breadcrumb.grandParentFolderName.id = grandParentFolderData[0].id;
   breadcrumb.grandParentFolderName.name = grandParentFolderData[0].name;
   // 親フォルダがない場合はbreadcrumbをreturnする

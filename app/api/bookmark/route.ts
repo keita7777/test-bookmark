@@ -1,3 +1,4 @@
+import { pageSize } from "@/utils/common/pageSize";
 import prisma from "@/utils/db/db";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -5,6 +6,8 @@ export const GET = async (req: NextRequest) => {
   const searchParams = req.nextUrl.searchParams;
   const folderId = searchParams.get("folderId");
   const bookmarkId = searchParams.get("bookmarkId");
+  const isCount = searchParams.get("count");
+  const page = Number(searchParams.get("page"));
 
   // folderIdの子フォルダの配列を用意
   let childFolders: Array<string> = [];
@@ -40,20 +43,36 @@ export const GET = async (req: NextRequest) => {
       resultArray.push(folderId);
     }
 
-    const bookmarks = await prisma.bookmarks.findMany({
-      where: {
-        id: bookmarkId || undefined,
-        folder_id: {
-          // folderIdがある場合は子フォルダ、孫フォルダを含めて取得する
-          in: folderId ? resultArray : undefined,
+    if (isCount) {
+      // ブックマークの件数を取得する
+      const bookmarkCount = await prisma.bookmarks.count({
+        where: {
+          folder_id: {
+            // folderIdがある場合は子フォルダ、孫フォルダを含めて取得する
+            in: folderId ? resultArray : undefined,
+          },
         },
-      },
-      include: {
-        memo: true,
-      },
-    });
+      });
 
-    return NextResponse.json({ message: "取得完了", bookmarks }, { status: 200 });
+      return NextResponse.json({ message: "取得完了", bookmarkCount }, { status: 200 });
+    } else {
+      // ブックマークデータを取得する
+      const bookmarks = await prisma.bookmarks.findMany({
+        where: {
+          id: bookmarkId || undefined,
+          folder_id: {
+            // folderIdがある場合は子フォルダ、孫フォルダを含めて取得する
+            in: folderId ? resultArray : undefined,
+          },
+        },
+        include: {
+          memo: true,
+        },
+        take: pageSize,
+        skip: page !== 1 ? (page - 1) * 6 : undefined,
+      });
+      return NextResponse.json({ message: "取得完了", bookmarks }, { status: 200 });
+    }
   } catch (error) {
     return NextResponse.json({ message: "取得失敗", error }, { status: 500 });
   }
