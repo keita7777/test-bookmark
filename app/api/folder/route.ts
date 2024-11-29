@@ -137,6 +137,7 @@ export const DELETE = async (req: NextRequest) => {
     return NextResponse.json({ message: "削除失敗" }, { status: 500 });
   }
   try {
+    // 配下のフォルダをすべて削除する
     await prisma.folders.deleteMany({
       where: {
         id: {
@@ -144,6 +145,18 @@ export const DELETE = async (req: NextRequest) => {
         },
       },
     });
+
+    // 親フォルダが他に子フォルダを持たない場合hasChildをfalseにする
+    if (!data.hasSiblingFolders) {
+      await prisma.folder_relation.update({
+        where: {
+          id: data.parentFolderId,
+        },
+        data: {
+          hasChild: false,
+        },
+      });
+    }
 
     return NextResponse.json({ message: "削除完了" }, { status: 200 });
   } catch (error) {

@@ -168,7 +168,12 @@ export const deleteBookmark = async (bookmarkId: string) => {
 };
 
 // フォルダを削除する処理
-export const deleteFolder = async (folderId: string, relatedFolders: Array<string>) => {
+export const deleteFolder = async (
+  folderId: string,
+  relatedFolders: Array<string>,
+  hasSiblingFolders: boolean,
+  parentFolderId: string | null,
+) => {
   await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/folder?folderId=${folderId}`, {
     method: "DELETE",
     headers: {
@@ -176,6 +181,8 @@ export const deleteFolder = async (folderId: string, relatedFolders: Array<strin
     },
     body: JSON.stringify({
       relatedFolders,
+      hasSiblingFolders,
+      parentFolderId,
     }),
   });
 };
