@@ -145,9 +145,9 @@ export const PUT = async (req: NextRequest) => {
       include: { memo: true },
     });
 
-    // メモが空白で渡された場合、かつメモが登録されている場合
+    // メモがnullで渡された場合、かつメモが登録されている場合
     // bookmark_memoテーブルからデータを削除する
-    if (data.memo === "" && res.memo) {
+    if (!data.memo && res.memo) {
       await prisma.bookmark_memo.delete({
         where: {
           id: res.id,

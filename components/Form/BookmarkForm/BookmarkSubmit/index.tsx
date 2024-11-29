@@ -135,7 +135,10 @@ const BookmarkSubmit = ({ urlData, folderData, bookmarkData }: Props) => {
       return;
     }
 
-    const { title, description, selectedFolder, memo } = data;
+    const { title, description, selectedFolder } = data;
+
+    // メモが空欄の場合はnullにする
+    const memo = data.memo !== "" ? data.memo : null;
 
     if (bookmarkData) {
       // 更新の場合
