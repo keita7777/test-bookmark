@@ -10,10 +10,24 @@ type Props = {
 const BookmarkList = async ({ folderId, page }: Props) => {
   const bookmarks: BookmarkWithMemo[] = await getBookmarkData({ folderId, page });
 
+  if (!bookmarks) {
+    return <p>ブックマークが取得できませんでした</p>;
+  }
+
   return (
-    <ul className="grid 2xl:grid-cols-2 xl:grid-cols-1 gap-4">
-      {bookmarks && bookmarks.map((bookmark) => <BookmarkCard key={bookmark.id} bookmark={bookmark} />)}
-    </ul>
+    <>
+      {bookmarks.length > 0 ? (
+        <ul className="grid 2xl:grid-cols-2 xl:grid-cols-1 gap-4">
+          {bookmarks.map((bookmark) => (
+            <BookmarkCard key={bookmark.id} bookmark={bookmark} />
+          ))}
+        </ul>
+      ) : (
+        <div className="flex justify-start items-center my-6">
+          <p className="text-3xl">ブックマークはありません</p>
+        </div>
+      )}
+    </>
   );
 };
 export default BookmarkList;
