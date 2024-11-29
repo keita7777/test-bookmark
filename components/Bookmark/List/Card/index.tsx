@@ -2,15 +2,14 @@ import Image from "next/image";
 import testImage from "@/DummtData/images/test-image.png";
 import SettingButton from "./SettingButton";
 import { BookmarkWithMemo } from "@/types/bookmarkType";
-import { getBreadcrumbPath } from "@/utils/common/breadcrumbs";
 import { BreadcrumbType } from "@/types/breadcrumbType";
 
 type Props = {
   bookmark: BookmarkWithMemo;
+  breadcrumb: BreadcrumbType;
 };
 
-const BookmarkCard = async ({ bookmark }: Props) => {
-  const breadcrumb: BreadcrumbType = await getBreadcrumbPath(bookmark.folder_id);
+const BookmarkCard = async ({ bookmark, breadcrumb }: Props) => {
   const breadcrumbKeys: (keyof BreadcrumbType)[] = ["grandParentFolderName", "parentFolderName", "currentFolder"];
 
   return (
