@@ -4,7 +4,7 @@
 import Breadcrumb from "@/components/Bookmark/Breadcrumb";
 import BookmarkList from "@/components/Bookmark/List";
 import Pagenation from "@/components/Bookmark/Pagenation";
-import { countBookmarks } from "@/utils/db/fetchData";
+import { countBookmarks, getFolderData } from "@/utils/db/fetchData";
 import { notFound } from "next/navigation";
 
 export default async function BookmarksByFolderPage({
@@ -17,7 +17,9 @@ export default async function BookmarksByFolderPage({
   const bookmarkCount = await countBookmarks(params.id);
   const page = searchParams.page ? Number(searchParams.page) : 1;
 
-  if (!bookmarkCount) {
+  // 無効なURLの場合not-foundページを表示させる
+  const folderData = await getFolderData(params.id);
+  if (folderData.length <= 0) {
     notFound();
   }
 
