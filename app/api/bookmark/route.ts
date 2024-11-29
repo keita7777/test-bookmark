@@ -145,13 +145,23 @@ export const PUT = async (req: NextRequest) => {
       include: { memo: true },
     });
 
+    // メモが空白で渡された場合、かつメモが登録されている場合
+    // bookmark_memoテーブルからデータを削除する
+    if (data.memo === "" && res.memo) {
+      await prisma.bookmark_memo.delete({
+        where: {
+          id: res.id,
+        },
+      });
+    }
+
     // メモが更新された場合
     if (res.memo !== data.memo) {
       if (res.memo) {
         // メモがすでに登録されていた場合は更新する
         await prisma.bookmark_memo.update({
           where: {
-            id: data.id,
+            id: res.id,
           },
           data: {
             memo: data.memo,
