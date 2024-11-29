@@ -29,7 +29,7 @@ const UrlSubmit = ({ url, setUrl, setUrlData, setIsUrlSubmit }: Props) => {
       <input
         type="text"
         placeholder="URLを入力してください"
-        className="border border-black rounded-md p-2 flex-1"
+        className="border border-black rounded-md p-2 flex-1 w-full"
         defaultValue={url || ""}
         onChange={(e) => setUrl(e.target.value)}
       />
