@@ -1,36 +1,74 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 概要
+プログラミング学習中に役立つサイトをブラウザのブックマークに保存しても、タイトルだけでは何のサイトか分からず、結局見返さないままブックマークが溜まってしまうことがよくありました。
+そこで、ブックマークにサイトの画像やメモを添えて保存できる仕組みを作ることで、サイトを開かずとも内容や保存理由が一目で分かるようにし、効率的にブックマークを管理できるアプリケーションを開発しました。
 
-## Getting Started
+# 機能
+## フォルダ作成
+フォルダを3階層まで作成でき、ブックマークをカテゴリごとに保存できます。
 
-First, run the development server:
+![create-folder](https://github.com/user-attachments/assets/a455612a-9e8d-4465-bfec-e661c2fd07c4)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## ブックマーク保存
+URLを入力すると、自動的にサイト情報（タイトル、サムネイル画像、サイト概要）を取得します。関連付けるフォルダを設定し、必要に応じてメモも保存可能です。
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+![create-bookmark](https://github.com/user-attachments/assets/eb6f3513-eead-4a62-b3f2-a8a5980fabf7)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-## Learn More
+## ブックマーク表示
+ヘッダーメニューのフォルダをクリックすると、フォルダごとにブックマークが表示されます。
 
-To learn more about Next.js, take a look at the following resources:
+# 未実装の機能
+- 認証機能
+- ブックマーク検索機能
+- 並べ替え機能
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+# ワイヤーフレーム
+- [PC表示](https://www.figma.com/design/Q9HhtGHjvg4b2qsnfFTqM5/%E3%83%96%E3%83%83%E3%82%AF%E3%83%9E%E3%83%BC%E3%82%AF%E7%AE%A1%E7%90%86%E3%82%A2%E3%83%97%E3%83%AA?node-id=43-2033&t=ZJQgamM2Yzj3qvs4-1)
+- [SP表示](https://www.figma.com/design/Q9HhtGHjvg4b2qsnfFTqM5/%E3%83%96%E3%83%83%E3%82%AF%E3%83%9E%E3%83%BC%E3%82%AF%E7%AE%A1%E7%90%86%E3%82%A2%E3%83%97%E3%83%AA?node-id=41-1065)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
-## Deploy on Vercel
+# テーブル定義書
+- [テーブル定義書](https://www.figma.com/design/Q9HhtGHjvg4b2qsnfFTqM5/%E3%83%96%E3%83%83%E3%82%AF%E3%83%9E%E3%83%BC%E3%82%AF%E7%AE%A1%E7%90%86%E3%82%A2%E3%83%97%E3%83%AA?node-id=43-2033)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+# 使用技術
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## プログラミング言語
+
+- TypeScript
+
+## フレームワーク
+
+- Next.js
+
+## ライブラリ
+
+### 認証
+
+- Auth.js
+- bcryptjs
+
+### フォーム管理
+
+- React Hook From
+
+### ORM
+
+- Prisma
+
+### UI 全般
+
+- Tailwind
+- react-icons
+
+## データベース
+
+- Supabase
+
+## インフラ
+
+- Vercel
+
+## バージョン管理
+
+- Git/GitHub
