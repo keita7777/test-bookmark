@@ -8,15 +8,34 @@
 
 ![create-folder](https://github.com/user-attachments/assets/a455612a-9e8d-4465-bfec-e661c2fd07c4)
 
-
 ## ブックマーク保存
 URLを入力すると、自動的にサイト情報（タイトル、サムネイル画像、サイト概要）を取得します。関連付けるフォルダを設定し、必要に応じてメモも保存可能です。
 
 ![create-bookmark](https://github.com/user-attachments/assets/eb6f3513-eead-4a62-b3f2-a8a5980fabf7)
 
-
-## ブックマーク表示
+## フォルダことにブックマーク表示
 ヘッダーメニューのフォルダをクリックすると、フォルダごとにブックマークが表示されます。
+
+![display-bookmark](https://github.com/user-attachments/assets/8a643872-cc16-4bac-bf67-7fbd8998deaf)
+
+## ブックマーク編集
+保存したブックマークは編集できます。
+
+![edit-bookmark](https://github.com/user-attachments/assets/ce963fec-5975-4f36-9810-94d0e5c4eca0)
+
+## ブックマーク削除
+保存したブックマークは削除できます。
+
+![delete-bookmark](https://github.com/user-attachments/assets/4c60fbea-406f-4918-b7a5-7be2b9da7cc9)
+
+## フォルダ編集
+保存したフォルダは編集できます。
+
+![edit-folder](https://github.com/user-attachments/assets/fd260cde-e181-418e-90b7-31b411f0bf87)
+
+## フォルダ削除
+保存したフォルダは削除できます。
+
 
 # 未実装の機能
 - 認証機能
