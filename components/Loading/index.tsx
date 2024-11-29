@@ -1,11 +1,9 @@
-"use client";
-
-import PuffLoader from "react-spinners/PuffLoader";
+import styles from "./Loading.module.css";
 
 const Loading = () => {
   return (
     <div className="flex justify-center items-center h-full">
-      <PuffLoader size={150} />
+      <span className={styles.loader}></span>
     </div>
   );
 };
