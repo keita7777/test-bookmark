@@ -1,6 +1,6 @@
 const ProfileMenu = () => {
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col px-4 py-6 md:p-0">
       <button className="flex justify-center items-center gap-4 rounded-md text-white bg-red-600 p-2 hover:bg-red-500 duration-100">
         ログアウト
       </button>

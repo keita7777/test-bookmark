@@ -24,8 +24,8 @@ const FolderMenu = ({ folders }: Props) => {
   };
 
   return (
-    <div className="w-full p-2 md:p-0">
-      <div className="bg-white rounded-md mb-4 border-2 border-black">
+    <div className="w-full px-4 py-6 md:p-0">
+      <div className="bg-white rounded-md mb-4 border-2 border-black hover:bg-gray-200">
         <Link href="/create-folder" className="px-4 py-2 font-bold flex justify-center items-center gap-4">
           <FaPlus />
           新規フォルダ作成
