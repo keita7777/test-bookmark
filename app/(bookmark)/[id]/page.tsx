@@ -5,6 +5,7 @@ import Breadcrumb from "@/components/Bookmark/Breadcrumb";
 import BookmarkList from "@/components/Bookmark/List";
 import Pagenation from "@/components/Bookmark/Pagenation";
 import { countBookmarks } from "@/utils/db/fetchData";
+import { notFound } from "next/navigation";
 
 export default async function BookmarksByFolderPage({
   params,
@@ -15,6 +16,10 @@ export default async function BookmarksByFolderPage({
 }) {
   const bookmarkCount = await countBookmarks(params.id);
   const page = searchParams.page ? Number(searchParams.page) : 1;
+
+  if (!bookmarkCount) {
+    notFound();
+  }
 
   return (
     <>
