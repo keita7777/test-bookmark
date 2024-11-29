@@ -36,6 +36,8 @@ URLを入力すると、自動的にサイト情報（タイトル、サムネ�
 ## フォルダ削除
 保存したフォルダは削除できます。
 
+![delete-folder](https://github.com/user-attachments/assets/a1af20ea-ab56-466f-9cb5-942491d29519)
+
 
 # 未実装の機能
 - 認証機能
