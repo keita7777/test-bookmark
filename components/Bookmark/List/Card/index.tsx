@@ -15,7 +15,7 @@ const BookmarkCard = async ({ bookmark }: Props) => {
 
   return (
     <li id={bookmark.id} className="flex flex-col border border-black rounded-md p-3 relative gap-4">
-      <div className="flex justify-between items-center gap-4">
+      <div className="flex justify-between items-center gap-4 relative">
         <p className="bg-blue-300 flex justify-start items-center px-2 py-1 rounded-md text-xs w-max">
           {breadcrumbKeys
             .filter((key) => breadcrumb[key]?.name)
