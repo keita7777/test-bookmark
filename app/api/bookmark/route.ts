@@ -57,21 +57,35 @@ export const GET = async (req: NextRequest) => {
       return NextResponse.json({ message: "取得完了", bookmarkCount }, { status: 200 });
     } else {
       // ブックマークデータを取得する
-      const bookmarks = await prisma.bookmarks.findMany({
-        where: {
-          id: bookmarkId || undefined,
-          folder_id: {
-            // folderIdがある場合は子フォルダ、孫フォルダを含めて取得する
-            in: folderId ? resultArray : undefined,
+      if (bookmarkId) {
+        // bookmarkIdがある場合は特定のブックマークデータを取得
+        const bookmarks = await prisma.bookmarks.findUnique({
+          where: {
+            id: bookmarkId,
           },
-        },
-        include: {
-          memo: true,
-        },
-        take: pageSize,
-        skip: page !== 1 ? (page - 1) * 6 : undefined,
-      });
-      return NextResponse.json({ message: "取得完了", bookmarks }, { status: 200 });
+          include: {
+            memo: true,
+          },
+        });
+        return NextResponse.json({ message: "取得完了", bookmarks }, { status: 200 });
+      } else {
+        // bookmarkIdがない場合は指定したブックマークリストをfindManyで取得
+        const bookmarks = await prisma.bookmarks.findMany({
+          where: {
+            id: bookmarkId || undefined,
+            folder_id: {
+              // folderIdがある場合は子フォルダ、孫フォルダを含めて取得する
+              in: folderId ? resultArray : undefined,
+            },
+          },
+          include: {
+            memo: true,
+          },
+          take: pageSize,
+          skip: page !== 1 ? (page - 1) * 6 : undefined,
+        });
+        return NextResponse.json({ message: "取得完了", bookmarks }, { status: 200 });
+      }
     }
   } catch (error) {
     return NextResponse.json({ message: "取得失敗", error }, { status: 500 });
