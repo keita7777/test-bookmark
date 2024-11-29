@@ -12,7 +12,7 @@ export const getUrlInfo = async (url: string) => {
       body: JSON.stringify(data),
     });
     if (!response.ok) {
-      return { message: "エラーが発生しました" };
+      return { message: "エラーが発生しました", error: true };
     }
     return response.json();
   } catch (error) {
