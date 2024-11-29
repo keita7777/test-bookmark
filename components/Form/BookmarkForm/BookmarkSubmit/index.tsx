@@ -2,7 +2,7 @@
 // 新規作成の場合、UrlSubmitコンポーネントで取得したサイト情報が初期値として設定される
 // 編集の場合、該当するブックマークの情報が初期値として設定される
 
-import testImage from "@/DummtData/images/test-image.png";
+import noImage from "@/public/images/no-image.png";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { FieldValues, useForm } from "react-hook-form";
@@ -24,6 +24,11 @@ type Props = {
 
 const BookmarkSubmit = ({ urlData, folderData, bookmarkData }: Props) => {
   const router = useRouter();
+
+  // 画像のsrcに設定するデータを管理
+  // 編集の場合「bookmarkData?.image」、新規作成の場合「urlData?.image」
+  // サイト情報の画像がない場合、画像が404の場合「noImage」
+  const [imageSrc, setImageSrc] = useState(bookmarkData?.image || urlData?.image || noImage);
 
   const {
     handleSubmit,
@@ -169,7 +174,7 @@ const BookmarkSubmit = ({ urlData, folderData, bookmarkData }: Props) => {
       )}
       <div className="flex justify-center flex-col xl:flex-row items-start gap-4">
         <div className="relative w-full xl:w-[400px] h-[300px] xl:h-[250px]">
-          <Image src={bookmarkData?.image || urlData?.image || testImage} fill alt="画像" />
+          <Image src={imageSrc} fill alt="画像" onError={() => setImageSrc(noImage)} />
         </div>
         <div className="flex flex-col gap-2 flex-1 w-full">
           <label htmlFor="" className="text-xl font-bold">
