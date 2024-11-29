@@ -2,11 +2,12 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { FaFolder, FaRegUserCircle, FaSearch } from "react-icons/fa";
+import { FaFolder, FaPlus, FaRegUserCircle, FaSearch } from "react-icons/fa";
 import FolderMenu from "./FolderMenu";
 import SearchMenu from "./SearchMenu";
 import ProfileMenu from "./ProfileMenu";
 import { FolderWithRelation } from "@/types/folderType";
+import Link from "next/link";
 
 type Props = {
   folders: FolderWithRelation[];
@@ -58,35 +59,43 @@ const HeaderNav = ({ folders }: Props) => {
   };
 
   return (
-    <div className="h-full flex p-4 gap-4">
+    <div className="h-full flex p-4 md:pt-0 gap-4">
       <div className="text-4xl">
         <nav>
-          <ul className="flex md:flex-col gap-3 md:gap-5 ">
+          <ul className="flex md:flex-col justify-center items-center gap-2 md:gap-5 ">
+            <li className="rounded-md hover:bg-slate-100 hover:text-gray-500 duration-100 text-white">
+              <Link title="ブックマーク作成" href="/create-bookmark" className="p-2 flex">
+                <FaPlus className="text-2xl md:text-3xl" />
+              </Link>
+            </li>
+            <li className="hidden md:block h-1 w-full">
+              <hr className="block bg-white" />
+            </li>
             <li
-              className={` rounded-md hover:bg-slate-100 hover:text-gray-500 duration-100 ${
+              className={`flex rounded-md hover:bg-slate-100 hover:text-gray-500 duration-100 ${
                 switchMenu === "folder" ? "bg-slate-100 text-gray-500" : "text-white"
               }`}
             >
               <button title="フォルダメニュー" onClick={() => handleSwitch("folder")} className="p-2">
-                <FaFolder className="text-3xl" />
+                <FaFolder className="text-2xl md:text-3xl" />
               </button>
             </li>
             <li
-              className={`rounded-md hover:bg-slate-100 hover:text-gray-500 duration-100 ${
+              className={`flex rounded-md hover:bg-slate-100 hover:text-gray-500 duration-100 ${
                 switchMenu === "search" ? "bg-slate-100 text-gray-500" : "text-white"
               }`}
             >
               <button title="ブックマーク検索" onClick={() => handleSwitch("search")} className="p-2">
-                <FaSearch className="text-3xl" />
+                <FaSearch className="text-2xl md:text-3xl" />
               </button>
             </li>
             <li
-              className={`rounded-md hover:bg-slate-100 hover:text-gray-500 duration-100 ${
+              className={`flex rounded-md hover:bg-slate-100 hover:text-gray-500 duration-100 ${
                 switchMenu === "profile" ? "bg-slate-100 text-gray-500" : "text-white"
               }`}
             >
               <button title="ユーザーメニュー" onClick={() => handleSwitch("profile")} className="p-2">
-                <FaRegUserCircle className="text-3xl" />
+                <FaRegUserCircle className="text-2xl md:text-3xl" />
               </button>
             </li>
           </ul>
