@@ -130,7 +130,7 @@ export const PUT = async (req: NextRequest) => {
   const data = await req.json();
 
   try {
-    await prisma.bookmarks.update({
+    const res = await prisma.bookmarks.update({
       where: {
         id: bookmarkId!,
       },
@@ -142,7 +142,32 @@ export const PUT = async (req: NextRequest) => {
         description: data.description,
         image: data.image,
       },
+      include: { memo: true },
     });
+
+    // メモが更新された場合
+    if (res.memo !== data.memo) {
+      if (res.memo) {
+        // メモがすでに登録されていた場合は更新する
+        await prisma.bookmark_memo.update({
+          where: {
+            id: data.id,
+          },
+          data: {
+            memo: data.memo,
+          },
+        });
+      } else {
+        // メモが登録されていない場合は新規作成する
+        await prisma.bookmark_memo.create({
+          data: {
+            id: res.id,
+            memo: data.memo,
+          },
+        });
+      }
+    }
+
     return NextResponse.json({ message: "更新完了" }, { status: 200 });
   } catch (error) {
     return NextResponse.json({ message: "更新失敗", error }, { status: 500 });
