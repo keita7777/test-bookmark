@@ -67,7 +67,7 @@ const HeaderNav = ({ folders }: Props) => {
                 switchMenu === "folder" ? "bg-slate-100 text-gray-500" : "text-white"
               }`}
             >
-              <button onClick={() => handleSwitch("folder")} className="p-2">
+              <button title="フォルダメニュー" onClick={() => handleSwitch("folder")} className="p-2">
                 <FaFolder className="text-3xl" />
               </button>
             </li>
@@ -76,7 +76,7 @@ const HeaderNav = ({ folders }: Props) => {
                 switchMenu === "search" ? "bg-slate-100 text-gray-500" : "text-white"
               }`}
             >
-              <button onClick={() => handleSwitch("search")} className="p-2">
+              <button title="ブックマーク検索" onClick={() => handleSwitch("search")} className="p-2">
                 <FaSearch className="text-3xl" />
               </button>
             </li>
@@ -85,7 +85,7 @@ const HeaderNav = ({ folders }: Props) => {
                 switchMenu === "profile" ? "bg-slate-100 text-gray-500" : "text-white"
               }`}
             >
-              <button onClick={() => handleSwitch("profile")} className="p-2">
+              <button title="ユーザーメニュー" onClick={() => handleSwitch("profile")} className="p-2">
                 <FaRegUserCircle className="text-3xl" />
               </button>
             </li>
