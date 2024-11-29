@@ -35,6 +35,7 @@ const DeleteModal = ({ id, folderName, hasChild, setIsDeleteClick, folderData }:
           onClick={async () => {
             await deleteFolder(id, relatedFolders);
             setIsDeleteClick(false);
+            router.push("/");
             router.refresh();
           }}
         >

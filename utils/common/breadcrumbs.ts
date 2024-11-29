@@ -21,7 +21,7 @@ export const getBreadcrumbPath = async (id: string) => {
   // フォルダ名を取得しbreadcrumbのfolderNameに設定
   const folderData = await getFolderData(id);
 
-  if (!folderData) return breadcrumb;
+  if (!folderData || folderData.length <= 0) return breadcrumb;
 
   breadcrumb.currentFolder.id = folderData[0].id;
   breadcrumb.currentFolder.name = folderData[0].name;
