@@ -1,5 +1,5 @@
 import Image from "next/image";
-import testImage from "@/DummtData/images/test-image.png";
+import noImage from "@/public/images/no-image.png";
 import SettingButton from "./SettingButton";
 import { BookmarkWithMemo } from "@/types/bookmarkType";
 import { BreadcrumbType } from "@/types/breadcrumbType";
@@ -33,7 +33,7 @@ const BookmarkCard = async ({ bookmark, breadcrumb }: Props) => {
           rel="noopener noreferrer"
           className="relative w-full xl:w-[300px] h-[300px] xl:h-[200px]"
         >
-          <Image src={bookmark.image || testImage} fill alt="画像" />
+          <Image src={bookmark.image || noImage} fill alt="画像" />
         </a>
         <div className="flex flex-col gap-2 w-full xl:ml-5">
           <h2 className="text-xl font-bold">{bookmark.title}</h2>
