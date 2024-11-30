@@ -1,5 +1,7 @@
 "use client";
 
+import { signinSchema } from "@/validations/signinSchema";
+import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 
@@ -9,8 +11,14 @@ const SigninForm = () => {
     register,
     // setError,
     // setValue,
-    // formState: { errors },
-  } = useForm();
+    formState: { errors },
+  } = useForm({
+    resolver: zodResolver(signinSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
 
   const onSubmit = () =>
     // data: FieldValues
@@ -25,6 +33,7 @@ const SigninForm = () => {
         <div className="flex flex-col gap-2">
           <label htmlFor="email">メールアドレス</label>
           <input className="border border-black rounded-md outline-none px-2 py-1" type="text" {...register("email")} />
+          {errors["email"] && <p className="text-red-500 font-bold">{errors["email"].message}</p>}
         </div>
         <div className="flex flex-col gap-2">
           <label htmlFor="password">パスワード</label>
@@ -33,6 +42,7 @@ const SigninForm = () => {
             type="password"
             {...register("password")}
           />
+          {errors["password"] && <p className="text-red-500 font-bold">{errors["password"].message}</p>}
         </div>
         <div className="flex justify-center items-center">
           <button className="bg-blue-600 text-white rounded-md w-full max-w-[200px] hover:bg-blue-500 p-1">
