@@ -22,11 +22,12 @@ const BookmarkForm = ({ folderData, bookmarkData }: Props) => {
 
   // UrlSubmitコンポーネントで取得したサイト情報を管理
   // UrlSubmitコンポーネントでsetし値をBookmarkSubmitコンポーネントに渡す
+  // 編集時はDBのデータが設定される
   const [urlData, setUrlData] = useState({
-    title: "",
-    image: "",
-    url: "",
-    description: "",
+    title: bookmarkData?.title || "",
+    image: bookmarkData?.image || "",
+    url: bookmarkData?.url || "",
+    description: bookmarkData?.description || "",
   });
 
   // URLを入力しなおした時の対策
