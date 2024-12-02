@@ -4,8 +4,9 @@ import { z } from "zod";
 import { hash } from "bcryptjs";
 import { passwordMatchSchema } from "@/validations/passwordMatchSchema";
 import { passwordSchema } from "@/validations/passwordSchema";
-import { signIn } from "./auth";
+import { signIn, signOut } from "./auth";
 import { AuthError } from "next-auth";
+import { revalidatePath } from "next/cache";
 
 // 新規ユーザー登録処理
 export const createUser = async ({
@@ -115,4 +116,9 @@ export const loginWithCredentials = async ({ email, password }: { email: string;
       message: error instanceof AuthError ? error.cause?.err?.message : "認証に失敗しました。",
     };
   }
+};
+
+// ログアウト処理
+export const logout = async () => {
+  await signOut();
 };
