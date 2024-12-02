@@ -6,3 +6,8 @@ export type signupFormType = {
   password: string;
   passwordConfirm: string;
 };
+
+export type signinFormType = {
+  email: string;
+  password: string;
+};
