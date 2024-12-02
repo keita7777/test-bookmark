@@ -1,7 +1,7 @@
 // ヘッダーメニューの切り替えボタン、メニュー
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { FaFolder, FaPlus, FaRegUserCircle, FaSearch } from "react-icons/fa";
 import FolderMenu from "./FolderMenu";
 import SearchMenu from "./SearchMenu";
@@ -48,15 +48,55 @@ const HeaderNav = ({ folders }: Props) => {
   }, [updateIsSp]);
 
   const handleSwitch = (id: string) => {
-    if (isSp && switchMenu === id) {
-      // SP表示かつ同じメニューのボタンをクリックした場合
-      // クリックしたメニューが既に開いている場合は閉じる（トグル）
-      setSwitchMenu("");
+    if (isSp) {
+      // SP表示の場合
+      if (switchMenu === id) {
+        // 同じメニューをクリックした場合は閉じる
+        setSwitchMenu("");
+      } else {
+        // 異なるメニューをクリックした場合は切り替える
+        setSwitchMenu(id);
+      }
     } else {
-      // PC表示はトグルせずメニューを切り替える
+      // PC表示の場合は常にメニューを切り替える
       setSwitchMenu(id);
     }
   };
+
+  const menuRef = useRef<HTMLDivElement>(null); // メニュー領域を参照する
+
+  const handleClickOutside = useCallback(
+    (e: MouseEvent) => {
+      if (
+        menuRef.current &&
+        !menuRef.current.contains(e.target as Node) && // メニュー領域外がクリックされた場合
+        isSp // SP表示のときのみ
+      ) {
+        const clickedElement = e.target as HTMLElement;
+
+        // メニューボタンがクリックされた場合は閉じない
+        if (
+          clickedElement.closest("button[title='フォルダメニュー']") ||
+          clickedElement.closest("button[title='ブックマーク検索']") ||
+          clickedElement.closest("button[title='ユーザーメニュー']")
+        ) {
+          return;
+        }
+
+        setSwitchMenu(""); // メニューを閉じる
+      }
+    },
+    [isSp],
+  );
+
+  useEffect(() => {
+    if (isSp) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isSp, handleClickOutside]);
 
   return (
     <div className="h-full flex p-4 md:pt-0 gap-4">
@@ -102,7 +142,10 @@ const HeaderNav = ({ folders }: Props) => {
         </nav>
       </div>
 
-      <div className="w-full md:pl-4 absolute md:static left-0 top-full bg-gray-300 md:bg-transparent md:border-l-2 border-white z-20">
+      <div
+        ref={menuRef}
+        className="w-full md:pl-4 absolute md:static left-0 top-full bg-gray-300 md:bg-transparent md:border-l-2 border-white z-20"
+      >
         <div className={`${switchMenu === "folder" ? "block" : "hidden"}`}>
           <FolderMenu folders={folders} />
         </div>
