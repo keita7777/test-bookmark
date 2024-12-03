@@ -6,7 +6,7 @@ export const getUrlInfo = async (url: string) => {
     const response = await fetch("https://api.linkpreview.net", {
       method: "POST",
       headers: {
-        "X-Linkpreview-Api-Key": "24bb1eef6ac6094124990416b962c129",
+        "X-Linkpreview-Api-Key": process.env.NEXT_PUBLIC_LINKPREVIEW_APIKEY!,
       },
       mode: "cors",
       body: JSON.stringify(data),
