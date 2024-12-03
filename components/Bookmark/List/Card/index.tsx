@@ -2,20 +2,19 @@ import Image from "next/image";
 import noImage from "@/public/images/no-image.png";
 import SettingButton from "./SettingButton";
 import { BookmarkWithMemo } from "@/types/bookmarkType";
-import { BreadcrumbType } from "@/types/breadcrumbType";
+// import { BreadcrumbType } from "@/types/breadcrumbType";
 
 type Props = {
   bookmark: BookmarkWithMemo;
-  breadcrumb: BreadcrumbType;
 };
 
-const BookmarkCard = async ({ bookmark, breadcrumb }: Props) => {
-  const breadcrumbKeys: (keyof BreadcrumbType)[] = ["grandParentFolderName", "parentFolderName", "currentFolder"];
+const BookmarkCard = async ({ bookmark }: Props) => {
+  // const breadcrumbKeys: (keyof BreadcrumbType)[] = ["grandParentFolderName", "parentFolderName", "currentFolder"];
 
   return (
     <li id={bookmark.id} className="flex flex-col border border-black rounded-md p-3 relative gap-4">
       <div className="flex justify-between items-center gap-4 relative">
-        <p className="bg-blue-300 flex justify-start items-center px-2 py-1 rounded-md text-xs w-max">
+        {/* <p className="bg-blue-300 flex justify-start items-center px-2 py-1 rounded-md text-xs w-max">
           {breadcrumbKeys
             .filter((key) => breadcrumb[key]?.name)
             .map((key, index, array) => (
@@ -23,7 +22,7 @@ const BookmarkCard = async ({ bookmark, breadcrumb }: Props) => {
                 {breadcrumb[key]?.name}
               </span>
             ))}
-        </p>
+        </p> */}
         <SettingButton id={bookmark.id} />
       </div>
       <div className="flex flex-col xl:flex-row">

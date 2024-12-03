@@ -1,8 +1,8 @@
 import BookmarkCard from "./Card";
 import { getBookmarkData } from "@/utils/db/fetchData";
 import { BookmarkWithMemo } from "@/types/bookmarkType";
-import { BreadcrumbType } from "@/types/breadcrumbType";
-import { getBreadcrumbPath } from "@/utils/common/breadcrumbs";
+// import { BreadcrumbType } from "@/types/breadcrumbType";
+// import { getBreadcrumbPath } from "@/utils/common/breadcrumbs";
 
 type Props = {
   folderId?: string;
@@ -18,22 +18,22 @@ const BookmarkList = async ({ folderId, page, query }: Props) => {
   }
 
   // folder_idごとにパンくずリストを一括取得
-  const allbBreadcrumb: Record<string, BreadcrumbType> = {};
-  await Promise.all(
-    bookmarks.map(async (bookmark) => {
-      // フォルダが重複しないようにする
-      if (!allbBreadcrumb[bookmark.folder_id]) {
-        allbBreadcrumb[bookmark.folder_id] = await getBreadcrumbPath(bookmark.folder_id);
-      }
-    }),
-  );
+  // const allbBreadcrumb: Record<string, BreadcrumbType> = {};
+  // await Promise.all(
+  //   bookmarks.map(async (bookmark) => {
+  //     // フォルダが重複しないようにする
+  //     if (!allbBreadcrumb[bookmark.folder_id]) {
+  //       allbBreadcrumb[bookmark.folder_id] = await getBreadcrumbPath(bookmark.folder_id);
+  //     }
+  //   }),
+  // );
 
   return (
     <>
       {bookmarks.length > 0 ? (
         <ul className="grid 2xl:grid-cols-2 xl:grid-cols-1 gap-4">
           {bookmarks.map((bookmark) => (
-            <BookmarkCard key={bookmark.id} bookmark={bookmark} breadcrumb={allbBreadcrumb[bookmark.folder_id]} />
+            <BookmarkCard key={bookmark.id} bookmark={bookmark} />
           ))}
         </ul>
       ) : (
