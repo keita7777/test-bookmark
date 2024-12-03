@@ -8,6 +8,7 @@ export const GET = async (req: NextRequest) => {
   const bookmarkId = searchParams.get("bookmarkId");
   const isCount = searchParams.get("count");
   const page = Number(searchParams.get("page"));
+  const query = searchParams.get("query");
 
   // リクエストヘッダーからユーザーIDを取得
   const userId = req.headers.get("Authorization")?.replace("Bearer ", "");
@@ -55,6 +56,25 @@ export const GET = async (req: NextRequest) => {
             // folderIdがある場合は子フォルダ、孫フォルダを含めて取得する
             in: folderId ? resultArray : undefined,
           },
+          OR: [
+            {
+              title: {
+                contains: query ? query : undefined,
+              },
+            },
+            {
+              description: {
+                contains: query ? query : undefined,
+              },
+            },
+            {
+              memo: {
+                memo: {
+                  contains: query ? query : undefined,
+                },
+              },
+            },
+          ],
         },
       });
 
@@ -82,6 +102,25 @@ export const GET = async (req: NextRequest) => {
               // folderIdがある場合は子フォルダ、孫フォルダを含めて取得する
               in: folderId ? resultArray : undefined,
             },
+            OR: [
+              {
+                title: {
+                  contains: query ? query : undefined,
+                },
+              },
+              {
+                description: {
+                  contains: query ? query : undefined,
+                },
+              },
+              {
+                memo: {
+                  memo: {
+                    contains: query ? query : undefined,
+                  },
+                },
+              },
+            ],
           },
           include: {
             memo: true,

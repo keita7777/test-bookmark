@@ -155,7 +155,7 @@ const HeaderNav = ({ folders }: Props) => {
           <FolderMenu folders={folders} />
         </div>
         <div className={`${switchMenu === "search" ? "block" : "hidden"}`}>
-          <SearchMenu />
+          <SearchMenu folders={folders} />
         </div>
         <div className={`${switchMenu === "profile" ? "block" : "hidden"}`}>
           <ProfileMenu />

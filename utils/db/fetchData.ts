@@ -46,15 +46,18 @@ export const getBookmarkData = async ({
   folderId,
   bookmarkId,
   page,
+  query,
 }: {
   folderId?: string;
   bookmarkId?: string;
   page?: number;
+  query?: string;
 }) => {
   const params = new URLSearchParams();
   if (folderId) params.append("folderId", folderId);
   if (bookmarkId) params.append("bookmarkId", bookmarkId);
   if (page) params.append("page", page.toString());
+  if (query) params.append("query", query);
 
   const userId = await getUserId();
   if (!userId) {
@@ -247,7 +250,7 @@ export const deleteFolder = async (
 };
 
 // ブックマークの件数を取得する処理
-export const countBookmarks = async (folderId?: string) => {
+export const countBookmarks = async (folderId?: string, query?: string) => {
   const userId = await getUserId();
   if (!userId) {
     console.error("ユーザーが見つかりません");
@@ -255,7 +258,7 @@ export const countBookmarks = async (folderId?: string) => {
   }
 
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/api/bookmark?count=true${folderId ? `&folderId=${folderId}` : ""}`,
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/bookmark?count=true${folderId ? `&folderId=${folderId}` : ""}${query ? `&query=${query}` : ""}`,
     {
       method: "GET",
       cache: "no-store",

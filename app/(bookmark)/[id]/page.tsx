@@ -12,10 +12,11 @@ export default async function BookmarksByFolderPage({
   searchParams,
 }: {
   params: { id: string };
-  searchParams: { page: string };
+  searchParams: { page: string; query: string };
 }) {
-  const bookmarkCount = await countBookmarks(params.id);
   const page = searchParams.page ? Number(searchParams.page) : 1;
+  const query = searchParams.query ? searchParams.query : undefined;
+  const bookmarkCount = await countBookmarks(params.id, query);
 
   // 無効なURLの場合not-foundページを表示させる
   const folderData = await getFolderData(params.id);
@@ -26,7 +27,7 @@ export default async function BookmarksByFolderPage({
   return (
     <>
       <Breadcrumb id={params.id} />
-      <BookmarkList folderId={params.id} page={page} />
+      <BookmarkList folderId={params.id} page={page} query={query} />
       <Pagenation bookmarkCount={bookmarkCount} currentPage={page} />
     </>
   );

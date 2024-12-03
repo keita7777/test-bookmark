@@ -7,10 +7,11 @@ import { getBreadcrumbPath } from "@/utils/common/breadcrumbs";
 type Props = {
   folderId?: string;
   page: number;
+  query?: string;
 };
 
-const BookmarkList = async ({ folderId, page }: Props) => {
-  const bookmarks: BookmarkWithMemo[] = await getBookmarkData({ folderId, page });
+const BookmarkList = async ({ folderId, page, query }: Props) => {
+  const bookmarks: BookmarkWithMemo[] = await getBookmarkData({ folderId, page, query });
 
   if (!bookmarks) {
     return <p>ブックマークが取得できませんでした</p>;
