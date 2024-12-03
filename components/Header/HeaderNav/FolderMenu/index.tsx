@@ -31,9 +31,16 @@ const FolderMenu = ({ folders }: Props) => {
           新規フォルダ作成
         </Link>
       </div>
-      <ul className="flex flex-col gap-5">
-        <FolderTree folders={folders} openFolders={openFolders} toggleFolder={toggleFolder} />
-      </ul>
+      {folders.length > 0 ? (
+        <ul className="flex flex-col gap-5">
+          <FolderTree folders={folders} openFolders={openFolders} toggleFolder={toggleFolder} />
+        </ul>
+      ) : (
+        <div className="text-black md:text-white">
+          <p className="text-2xl font-bold text-center">フォルダがありません</p>
+          <p className="text-xl">ブックマークを作成する前にフォルダを作成してください</p>
+        </div>
+      )}
     </div>
   );
 };

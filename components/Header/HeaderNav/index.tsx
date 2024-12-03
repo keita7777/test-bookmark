@@ -103,14 +103,19 @@ const HeaderNav = ({ folders }: Props) => {
       <div className="text-4xl">
         <nav>
           <ul className="flex md:flex-col justify-center items-center gap-2 md:gap-5 ">
-            <li className="rounded-md hover:bg-slate-100 hover:text-gray-500 duration-100 text-white">
-              <Link title="ブックマーク作成" href="/create-bookmark" className="p-2 flex">
-                <FaPlus className="text-2xl md:text-3xl" />
-              </Link>
-            </li>
-            <li className="hidden md:block h-1 w-full">
-              <hr className="block bg-white" />
-            </li>
+            {folders.length > 0 && (
+              <>
+                <li className="rounded-md hover:bg-slate-100 hover:text-gray-500 duration-100 text-white">
+                  <Link title="ブックマーク作成" href="/create-bookmark" className="p-2 flex">
+                    <FaPlus className="text-2xl md:text-3xl" />
+                  </Link>
+                </li>
+                <li className="hidden md:block h-1 w-full">
+                  <hr className="block bg-white" />
+                </li>
+              </>
+            )}
+
             <li
               className={`flex rounded-md hover:bg-slate-100 hover:text-gray-500 duration-100 ${
                 switchMenu === "folder" ? "bg-slate-100 text-gray-500" : "text-white"
