@@ -1,10 +1,34 @@
+"use server";
+
 import { Level } from "@prisma/client";
+import { auth } from "../auth/auth";
+
+// sessionからユーザーIDを取得
+const getUserId = async () => {
+  const session = await auth();
+  const userId = session?.user?.id;
+  if (!userId) {
+    return null;
+  }
+  return userId;
+};
 
 // フォルダデータを取得する処理
 export const getFolderData = async (id?: string) => {
+  const userId = await getUserId();
+  if (!userId) {
+    console.error("ユーザーが見つかりません");
+    return null;
+  }
+
   const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/folder${id ? "?folderId=" + id : ""}`, {
     method: "GET",
     cache: "no-store",
+    headers: {
+      // ヘッダーにユーザーIDを含める
+      Authorization: "Bearer " + userId,
+      "Content-Type": "application/json",
+    },
   });
 
   if (!res.ok) {
@@ -32,12 +56,23 @@ export const getBookmarkData = async ({
   if (bookmarkId) params.append("bookmarkId", bookmarkId);
   if (page) params.append("page", page.toString());
 
+  const userId = await getUserId();
+  if (!userId) {
+    console.error("ユーザーが見つかりません");
+    return null;
+  }
+
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_URL}/api/bookmark?${params.toString()}
     `,
     {
       method: "GET",
       cache: "no-store",
+      headers: {
+        // ヘッダーにユーザーIDを含める
+        Authorization: "Bearer " + userId,
+        "Content-Type": "application/json",
+      },
     },
   );
 
@@ -59,14 +94,20 @@ export const createBookmark = async (
   image: string | null | undefined,
   memo: string | null,
 ) => {
+  const userId = await getUserId();
+  if (!userId) {
+    console.error("ユーザーが見つかりません");
+    return null;
+  }
+
   const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/bookmark`, {
     method: "POST",
     headers: {
+      // ヘッダーにユーザーIDを含める
+      Authorization: "Bearer " + userId,
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      // 認証を実装次第修正
-      userId: "f5a12336-c5d6-4b58-a549-b8f4be0db8b1",
       folder_id,
       url,
       title,
@@ -84,15 +125,21 @@ export const createBookmark = async (
 
 // フォルダを新規作成する処理
 export const createFolder = async (name: string, parentFolder: string | null, folderLevel: Level) => {
+  const userId = await getUserId();
+  if (!userId) {
+    console.error("ユーザーが見つかりません");
+    return null;
+  }
+
   const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/folder`, {
     method: "POST",
     headers: {
+      // ヘッダーにユーザーIDを含める
+      Authorization: "Bearer " + userId,
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
       name,
-      // 認証を実装次第修正
-      userId: "f5a12336-c5d6-4b58-a549-b8f4be0db8b1",
       parentFolder,
       folderLevel,
     }),
@@ -114,14 +161,20 @@ export const updateBookmark = async (
   image: string | null | undefined,
   memo: string | null,
 ) => {
+  const userId = await getUserId();
+  if (!userId) {
+    console.error("ユーザーが見つかりません");
+    return null;
+  }
+
   await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/bookmark?bookmarkId=${bookmarId}`, {
     method: "PUT",
     headers: {
+      // ヘッダーにユーザーIDを含める
+      Authorization: "Bearer " + userId,
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      // 認証を実装次第修正
-      userId: "f5a12336-c5d6-4b58-a549-b8f4be0db8b1",
       folder_id,
       url,
       title,
@@ -142,17 +195,23 @@ export const updateFolder = async (
   parentFolder: string | null,
   folderLevel: string,
 ) => {
+  const userId = await getUserId();
+  if (!userId) {
+    console.error("ユーザーが見つかりません");
+    return null;
+  }
+
   await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/folder?folderId=${folderId}`, {
     method: "PUT",
     headers: {
+      // ヘッダーにユーザーIDを含める
+      Authorization: "Bearer " + userId,
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
       currentParentFolderId,
       currentParentFolderHasChildren,
       updateParentFolderHasChildren,
-      // 認証を実装次第修正
-      userId: "f5a12336-c5d6-4b58-a549-b8f4be0db8b1",
       name,
       parentFolder,
       folderLevel,
@@ -189,11 +248,22 @@ export const deleteFolder = async (
 
 // ブックマークの件数を取得する処理
 export const countBookmarks = async (folderId?: string) => {
+  const userId = await getUserId();
+  if (!userId) {
+    console.error("ユーザーが見つかりません");
+    return null;
+  }
+
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_URL}/api/bookmark?count=true${folderId ? `&folderId=${folderId}` : ""}`,
     {
       method: "GET",
       cache: "no-store",
+      headers: {
+        // ヘッダーにユーザーIDを含める
+        Authorization: "Bearer " + userId,
+        "Content-Type": "application/json",
+      },
     },
   );
 

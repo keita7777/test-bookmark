@@ -9,6 +9,9 @@ export const GET = async (req: NextRequest) => {
   const isCount = searchParams.get("count");
   const page = Number(searchParams.get("page"));
 
+  // リクエストヘッダーからユーザーIDを取得
+  const userId = req.headers.get("Authorization")?.replace("Bearer ", "");
+
   // folderIdの子フォルダの配列を用意
   let childFolders: Array<string> = [];
   // folderIdの孫フォルダの配列を用意
@@ -47,6 +50,7 @@ export const GET = async (req: NextRequest) => {
       // ブックマークの件数を取得する
       const bookmarkCount = await prisma.bookmarks.count({
         where: {
+          user_id: userId,
           folder_id: {
             // folderIdがある場合は子フォルダ、孫フォルダを含めて取得する
             in: folderId ? resultArray : undefined,
@@ -73,6 +77,7 @@ export const GET = async (req: NextRequest) => {
         const bookmarks = await prisma.bookmarks.findMany({
           where: {
             id: bookmarkId || undefined,
+            user_id: userId,
             folder_id: {
               // folderIdがある場合は子フォルダ、孫フォルダを含めて取得する
               in: folderId ? resultArray : undefined,
@@ -93,13 +98,19 @@ export const GET = async (req: NextRequest) => {
 };
 
 export const POST = async (req: NextRequest) => {
+  // リクエストヘッダーからユーザーIDを取得
+  const userId = req.headers.get("Authorization")?.replace("Bearer ", "");
+  if (!userId) {
+    return NextResponse.json({ message: "ユーザーが見つかりません" }, { status: 400 });
+  }
+
   try {
     const data = await req.json();
 
     // bookmarksテーブルにデータ挿入
     const result = await prisma.bookmarks.create({
       data: {
-        user_id: data.userId,
+        user_id: userId,
         folder_id: data.folder_id,
         url: data.url,
         title: data.title,
@@ -129,13 +140,19 @@ export const PUT = async (req: NextRequest) => {
   const bookmarkId = searchParams.get("bookmarkId");
   const data = await req.json();
 
+  // リクエストヘッダーからユーザーIDを取得
+  const userId = req.headers.get("Authorization")?.replace("Bearer ", "");
+  if (!userId) {
+    return NextResponse.json({ message: "ユーザーが見つかりません" }, { status: 400 });
+  }
+
   try {
     const res = await prisma.bookmarks.update({
       where: {
         id: bookmarkId!,
       },
       data: {
-        user_id: data.userId,
+        user_id: userId,
         folder_id: data.folder_id,
         url: data.url,
         title: data.title,

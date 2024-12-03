@@ -5,11 +5,19 @@ export const GET = async (req: NextRequest) => {
   const searchParams = req.nextUrl.searchParams;
   const folderId = searchParams.get("folderId");
 
+  // リクエストヘッダーからユーザーIDを取得
+  const userId = req.headers.get("Authorization")?.replace("Bearer ", "");
+
+  if (!userId) {
+    return NextResponse.json({ message: "ユーザーが見つかりません" }, { status: 400 });
+  }
+
   try {
     const folders = await prisma.folders.findMany({
       // folderIdがある場合は特定のフォルダデータのみ取得
       where: {
         id: folderId || undefined,
+        user_id: userId,
       },
       include: {
         parent_relation: true,
@@ -23,13 +31,19 @@ export const GET = async (req: NextRequest) => {
 };
 
 export const POST = async (req: NextRequest) => {
+  const userId = req.headers.get("Authorization")?.replace("Bearer ", "");
+
+  if (!userId) {
+    return NextResponse.json({ message: "ユーザーが見つかりません" }, { status: 400 });
+  }
+
   try {
     const data = await req.json();
 
     // foldersテーブルにデータ挿入
     const folderResult = await prisma.folders.create({
       data: {
-        user_id: data.userId,
+        user_id: userId,
         name: data.name,
       },
     });
